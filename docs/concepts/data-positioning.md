@@ -11,7 +11,7 @@ Data positioning is the process of moving data from where it is created to where
 
 Raw data in a source system (a database, a SaaS platform, an API) is rarely in the form you need it. It reflects the structure of the system that created it, not the questions you want to ask. Data positioning is the work of bridging that gap: connecting to the source, selecting what matters, modelling it into business concepts, adding context, and finally making it visible and actionable.
 
-DPUse is built around this process. Every feature in the workbench corresponds to a stage of the positioning journey.
+DPUse is built around this process. The Workbench implements the positioning journey as a five-step workflow; the Knowledge component's AI chat can perform the same operations through conversation. Both surfaces share the same underlying pipeline.
 
 ## The three layers
 
@@ -58,5 +58,6 @@ This separation also makes the data pipeline easier to audit, debug, and explain
 ## Related
 
 - [What is DPUse?](../getting-started/what-is-dpuse.md)
+- [Application Architecture](./app-architecture.md)
 - [Connectors and Connections](./connectors-vs-connections.md)
 - [Dimensions and Events](./dimensions-and-events.md)
