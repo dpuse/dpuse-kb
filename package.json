@@ -1,7 +1,7 @@
 {
     "name": "dpuse-kb",
     "description": "The DPUse knowledge base — documentation source and ingestion scripts.",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "private": true,
     "type": "module",
     "engines": {
@@ -10,11 +10,14 @@
     "devDependencies": {
         "@dpuse/dpuse-development": "^0.3.507",
         "@types/node": "^25.9.3",
+        "gray-matter": "^4.0.3",
         "npm-check-updates": "^22.2.3",
         "tsx": "^4.22.4",
         "typescript": "^6.0.3"
     },
     "scripts": {
+        "ingest": "op run --env-file=.env -- tsx scripts/ingest.ts",
+        "search": "op run --env-file=.env -- tsx scripts/search.ts",
         "type-check": "tsc --noEmit",
         "ping": "tsx scripts/ping.ts",
         "ping:local": "DPUSE_API_URL=http://localhost:8787 tsx scripts/ping.ts",
