@@ -17,10 +17,10 @@ A **vendor** is an organisation that provides one or more data products — for 
 
 A **product** is a specific service offered by a vendor that holds or exposes data — for example:
 
-| Vendor | Product |
-| --- | --- |
-| Dropbox | Dropbox |
-| Google | Google Drive |
+| Vendor    | Product            |
+| --------- | ------------------ |
+| Dropbox   | Dropbox            |
+| Google    | Google Drive       |
 | Microsoft | Microsoft OneDrive |
 
 Connector plugins connect DPUse to a specific **product** from a specific **vendor**. There is one connector plugin per product — a Dropbox connector, a Google Drive connector, a Microsoft OneDrive connector, and so on.

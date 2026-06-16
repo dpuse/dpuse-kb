@@ -57,6 +57,7 @@ The Knowledge component has two parts:
 Session management is the foundation that both halves depend on. A session is established when a user signs up, signs in, or continues an existing authenticated session. Without an active session, neither the Workbench nor the Knowledge component is accessible.
 
 Session capabilities include:
+
 - Sign up, sign in, and sign out
 - Account management (personal details, subscription, tokens, preferences)
 - Session lifecycle and multi-session management

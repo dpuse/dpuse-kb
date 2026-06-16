@@ -25,6 +25,7 @@ Your current plan and usage limits. This determines which features and data volu
 
 **Tokens and access**
 DPUse uses token-based authentication for API access. From this panel you can:
+
 - View your current session token status
 - Generate personal access tokens for use with the API or external integrations
 - Set token lifetimes and revoke tokens you no longer need
@@ -34,6 +35,7 @@ Manage permissions associated with your account. Depending on your plan, this ma
 
 **Preferences**
 Application-level settings including:
+
 - Dark mode toggle
 - Language / locale selection
 

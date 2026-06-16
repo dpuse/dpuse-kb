@@ -11,12 +11,12 @@ Dimensions and events are the two core structures of the transform layer in DPUs
 
 They are distinct but complementary:
 
-- A **dimension** represents a *thing* — a stable business entity
-- An **event** (or event query) represents *something that happened* to or involving that thing
+- A **dimension** represents a _thing_ — a stable business entity
+- An **event** (or event query) represents _something that happened_ to or involving that thing
 
 ## Dimensions
 
-A dimension is a curated model of a business entity built from one or more data views. Where a data view gives you the raw structure of data as it exists in the source system, a dimension gives you a clean, consistent representation of what that data *means*.
+A dimension is a curated model of a business entity built from one or more data views. Where a data view gives you the raw structure of data as it exists in the source system, a dimension gives you a clean, consistent representation of what that data _means_.
 
 For example, a source system might store customer data across three tables with technical field names and internal identifiers. A Customer dimension assembles those fields into a single, well-named model — `customerId`, `fullName`, `region`, `tier` — that can be used consistently across the rest of your data pipeline.
 
@@ -42,7 +42,7 @@ For example: "a sale was made" is an event. An event query would define what con
 
 ### Why events matter
 
-Dimensions alone describe what exists. Events describe what *happened* and *when*. Together they let you answer questions like:
+Dimensions alone describe what exists. Events describe what _happened_ and _when_. Together they let you answer questions like:
 
 - How has this customer's behaviour changed over time?
 - Which products have seen an increase in transactions this quarter?

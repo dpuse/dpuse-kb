@@ -15,17 +15,14 @@ if (!query) {
     process.exit(1);
 }
 
-const res = await fetch(
-    `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/ai-search/instances/${INSTANCE_ID}/search`,
-    {
-        method: 'POST',
-        headers: {
-            Authorization: `Bearer ${API_TOKEN}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ query }),
-    }
-);
+const res = await fetch(`https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/ai-search/instances/${INSTANCE_ID}/search`, {
+    method: 'POST',
+    headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ query })
+});
 
 if (!res.ok) {
     console.error(`${res.status} — ${await res.text()}`);

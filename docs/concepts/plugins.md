@@ -15,11 +15,11 @@ Each plugin type has a defined interface that it must implement. DPUse loads the
 
 DPUse currently supports three types of plugin:
 
-| Plugin type | Purpose |
-| --- | --- |
-| **Connector** | Enables DPUse to communicate with a vendor product as a data source |
+| Plugin type   | Purpose                                                                   |
+| ------------- | ------------------------------------------------------------------------- |
+| **Connector** | Enables DPUse to communicate with a vendor product as a data source       |
 | **Presenter** | Defines how data is rendered and displayed in presentations and data apps |
-| **Tutorial** | Provides guided, interactive learning experiences within the workbench |
+| **Tutorial**  | Provides guided, interactive learning experiences within the workbench    |
 
 ### Connector plugins
 

@@ -13,11 +13,11 @@ There is no static site. The markdown files are the source of truth; the pipelin
 
 ## The three DPUse projects
 
-| Project | Role |
-| --- | --- |
-| `dpuse-app` | Vue 3 frontend — the workbench and knowledge component |
-| `dpuse-api` | Cloudflare Workers backend — API, auth, AI chat, RAG, D1 |
-| `dpuse-kb` | This project — documentation markdown files and ingestion scripts |
+| Project     | Role                                                              |
+| ----------- | ----------------------------------------------------------------- |
+| `dpuse-app` | Vue 3 frontend — the workbench and knowledge component            |
+| `dpuse-api` | Cloudflare Workers backend — API, auth, AI chat, RAG, D1          |
+| `dpuse-kb`  | This project — documentation markdown files and ingestion scripts |
 
 ---
 
@@ -73,11 +73,11 @@ Sign-up, sign-in, sign-out, and account management. Required by both halves. Not
 
 DPUse is extended through dynamically loaded **plugins**. Three types:
 
-| Plugin type | Purpose |
-| --- | --- |
+| Plugin type   | Purpose                                                                                |
+| ------------- | -------------------------------------------------------------------------------------- |
 | **Connector** | Enables communication with a vendor product as a data source. Functions like a driver. |
-| **Presenter** | Defines how data is rendered in presentations and data apps |
-| **Tutorial** | Provides interactive guided learning within the workbench |
+| **Presenter** | Defines how data is rendered in presentations and data apps                            |
+| **Tutorial**  | Provides interactive guided learning within the workbench                              |
 
 Custom plugin development is a planned future capability.
 
@@ -87,8 +87,8 @@ Custom plugin development is a planned future capability.
 - **Product** — a specific service by a vendor (e.g. Google Drive, Microsoft OneDrive)
 - **Connector plugin** — one per product; implements the protocol/auth for that product (driver model)
 - **Connection** — stored config (credentials, account identifiers) used by the plugin to open a live channel
-  - Authenticated connectors: multiple connections per plugin (one per account)
-  - Unauthenticated connectors (e.g. Application Emulator, File Store Emulator): exactly one connection per plugin, no credentials required
+    - Authenticated connectors: multiple connections per plugin (one per account)
+    - Unauthenticated connectors (e.g. Application Emulator, File Store Emulator): exactly one connection per plugin, no credentials required
 
 ---
 
@@ -159,13 +159,13 @@ docs/
 
 ## Phased build plan
 
-| Phase | Content | Status |
-| --- | --- | --- |
-| 1 | Concepts + Getting Started | Done |
-| 2 | Workbench user guides (one per stage) | Not started |
-| 3 | Account + Manage Configs | Not started |
-| 4 | API reference | Not started |
-| 5 | Ingest script (D1 + RAG pipeline) | Not started |
+| Phase | Content                               | Status      |
+| ----- | ------------------------------------- | ----------- |
+| 1     | Concepts + Getting Started            | Done        |
+| 2     | Workbench user guides (one per stage) | Not started |
+| 3     | Account + Manage Configs              | Not started |
+| 4     | API reference                         | Not started |
+| 5     | Ingest script (D1 + RAG pipeline)     | Not started |
 
 ---
 
@@ -183,8 +183,9 @@ audience: user | developer | admin
 ```
 
 **Style rules:**
+
 - Second person ("you"), active voice
-- Describe *what things are* not *where to click* — avoids churn as the UI evolves
+- Describe _what things are_ not _where to click_ — avoids churn as the UI evolves
 - Each file covers one topic and is self-contained (important for RAG chunk quality)
 - Split at headings — each H2 section should be semantically focused
 - No jargon without definition; link to glossary on first use of a key term
@@ -197,19 +198,19 @@ audience: user | developer | admin
 
 ## Key DPUse concepts (vocabulary)
 
-| Term | Definition |
-| --- | --- |
-| Data Positioning | Moving raw data from source systems through Source → Transform → Visualise layers |
-| Plugin | A dynamically loaded module that extends DPUse capabilities at runtime |
-| Connector plugin | A plugin that functions as a driver for a specific vendor product |
-| Connection | Stored config (credentials, account identifiers) used by a connector plugin to open a live channel |
-| Vendor | An organisation providing data products (e.g. Dropbox, Google, Microsoft) |
-| Product | A specific data service from a vendor (e.g. Google Drive, Microsoft OneDrive) |
-| Data View | A scoped selection of data from a connection |
-| Dimension | A curated business-entity model built from data views |
-| Event / Event Query | A time-based occurrence captured from data, linked to dimensions |
-| Presentation | A structured space for exploring and documenting data |
-| Data App | A packaged application built on top of data models |
-| Knowledge component | The AI chat + knowledge search half of DPUse |
-| RAG | Retrieval-Augmented Generation — how the AI chat grounds answers in KB content |
-| Tool (AI) | A structured capability the AI chat can invoke — the AI-surface equivalent of a UI action |
+| Term                | Definition                                                                                         |
+| ------------------- | -------------------------------------------------------------------------------------------------- |
+| Data Positioning    | Moving raw data from source systems through Source → Transform → Visualise layers                  |
+| Plugin              | A dynamically loaded module that extends DPUse capabilities at runtime                             |
+| Connector plugin    | A plugin that functions as a driver for a specific vendor product                                  |
+| Connection          | Stored config (credentials, account identifiers) used by a connector plugin to open a live channel |
+| Vendor              | An organisation providing data products (e.g. Dropbox, Google, Microsoft)                          |
+| Product             | A specific data service from a vendor (e.g. Google Drive, Microsoft OneDrive)                      |
+| Data View           | A scoped selection of data from a connection                                                       |
+| Dimension           | A curated business-entity model built from data views                                              |
+| Event / Event Query | A time-based occurrence captured from data, linked to dimensions                                   |
+| Presentation        | A structured space for exploring and documenting data                                              |
+| Data App            | A packaged application built on top of data models                                                 |
+| Knowledge component | The AI chat + knowledge search half of DPUse                                                       |
+| RAG                 | Retrieval-Augmented Generation — how the AI chat grounds answers in KB content                     |
+| Tool (AI)           | A structured capability the AI chat can invoke — the AI-surface equivalent of a UI action          |
