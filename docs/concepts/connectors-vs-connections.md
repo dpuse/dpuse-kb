@@ -1,56 +1,81 @@
 ---
 title: Connectors and Connections
 section: Concepts
-tags: [connector, connection, data source, integration]
+tags: [connector, connection, plugin, vendor, product, data source]
 audience: user
 ---
 
-## The distinction
+Connectors are one type of DPUse plugin. For an overview of the plugin system, see [Plugins](./plugins.md).
 
-The terms **connector** and **connection** are related but refer to different things. Understanding the difference matters because you interact with them at different points in the workbench.
+---
 
-A **connector** is a template — it defines how DPUse integrates with a *type* of data source. It describes the protocol, the authentication method, the data format, and the capabilities that are available when talking to that category of system.
+## Vendors and products
 
-A **connection** is an instance of a connector — a configured, live link to a *specific* data source. It provides the credentials, endpoint, and any instance-specific settings needed to actually talk to one particular system of that type.
+Before explaining connector plugins, it helps to understand how DPUse thinks about external data sources.
 
-## An analogy
+A **vendor** is an organisation that provides one or more data products — for example, Dropbox, Google, or Microsoft.
 
-Think of a connector as a plug type, and a connection as a specific cable plugged into a specific socket.
+A **product** is a specific service offered by a vendor that holds or exposes data — for example:
 
-The plug type defines the shape and the electrical standard — that's the connector. The cable connecting your device to a particular power outlet in a particular room — that's the connection. You might have many cables (connections) of the same plug type (connector), each going to a different outlet (source system instance).
+| Vendor | Product |
+| --- | --- |
+| Dropbox | Dropbox |
+| Google | Google Drive |
+| Microsoft | Microsoft OneDrive |
 
-## Connectors
+Connector plugins connect DPUse to a specific **product** from a specific **vendor**. There is one connector plugin per product — a Dropbox connector, a Google Drive connector, a Microsoft OneDrive connector, and so on.
 
-Connectors are configured at the organisation or platform level. They are not something most end users create — they represent the approved integrations available in your environment. When a new type of data source needs to be integrated, a connector is built or installed to support it.
+---
 
-From the **Manage Configs > Connectors** area of the workbench, you can see which connectors are available and inspect their configuration.
+## Connector plugins
 
-Connectors define:
-- The type of system they integrate with (e.g., a relational database, a SaaS API, a file source)
-- The authentication methods they support
-- The data items and operations they expose
+A connector plugin is a dynamically loaded module that DPUse loads at runtime to enable communication with a particular vendor product. It functions like a driver — in the same way a database driver implements the protocol for talking to a specific database engine, a connector plugin implements everything needed to talk to a specific vendor product: the authentication flow, the API protocol, the data structures the product exposes, and the operations DPUse can perform against it.
+
+The plugin itself does not hold any account-specific credentials. It provides the capability to communicate with a product; a connection provides the parameters the plugin needs to open a channel.
+
+Not all connector plugins require authentication. Some — such as the Application Emulator and File Store Emulator — connect to local or simulated data sources that have no concept of accounts or credentials. These plugins still require a connection, but that connection holds no credentials and there is only ever one of them per plugin.
+
+Connector plugins are installed and managed at the platform level. They are not something individual users create — they represent the set of vendor products your DPUse environment has been set up to support. From the **Manage Configs > Connectors** area of the workbench you can see which connector plugins are available.
+
+---
 
 ## Connections
 
-Connections are what you create when you want to work with a specific data source. They bind a connector to a real system instance using credentials you supply.
+A **connection** is the stored configuration that a connector plugin uses to open a live channel to a data source. What that configuration contains depends on the plugin:
 
-From the **Manage Configs > Connections** area (or the Connection dialog in the workbench toolbar), you can:
-- Create a new connection for any available connector type
-- View and update existing connections
-- Test whether a connection is live
+- For plugins that connect to external vendor products, the connection holds credentials and account identifiers — the information needed to authenticate with a specific account
+- For plugins that connect to local or simulated sources (such as emulators), the connection holds only the minimal configuration needed to identify the plugin — no credentials are required
 
-A single connector can have many connections — for example, you might have a PostgreSQL connector with separate connections for a production database, a staging database, and a partner's database.
+When DPUse needs to access data, it loads the relevant connector plugin and supplies it with the connection configuration. The plugin uses that configuration to open a live communication channel. The connection itself is the stored config; the plugin is what knows how to use it.
+
+**Authenticated connectors** can have any number of connections — one per account. For example, a single Dropbox connector plugin could support two connections:
+
+- **Personal Dropbox** — credentials for your personal Dropbox account
+- **Work Dropbox** — credentials for your work Dropbox account
+
+Both connections use the same plugin. What differs is the account they are configured for.
+
+**Unauthenticated connectors** support exactly one connection per plugin, since there are no accounts to differentiate. The Application Emulator and File Store Emulator are examples of this type.
+
+You create and manage connections from the **Manage Configs > Connections** area, or from the Connection dialog in the workbench toolbar.
+
+---
 
 ## How they relate to data views
 
-When you establish a data view, you choose a connection as its source. The data view then uses that connection to fetch and display data from the underlying system.
+When you establish a data view, you choose a connection as its source. The data view uses that connection — and therefore the underlying connector plugin — to fetch and display data from the product.
 
-This layering means:
-- Changing the credentials on a connection updates all data views that use it, without requiring those views to be reconfigured
-- You can duplicate a data view and point it at a different connection (e.g., staging vs. production) to compare the same data structure across environments
+This means:
+
+- Updating the credentials on a connection applies to all data views using it, without reconfiguring those views
+- You can create multiple connections for the same product account if you need to manage credentials separately across different parts of your workspace
+
+---
 
 ## Related
 
+- [Plugins](./plugins.md)
+- [Connector Plugin — Structure and Development](../plugins/connector-plugin.md)
 - [Data Positioning](./data-positioning.md)
 - [Establish Data Views — Overview](../workbench/establish-data-views/overview.md)
 - [Manage Connectors](../manage-configs/connectors.md)

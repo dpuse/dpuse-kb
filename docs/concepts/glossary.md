@@ -15,7 +15,7 @@ This glossary defines the terms used throughout DPUse documentation. Where a con
 A stored configuration object in DPUse. Configs represent the settings and definitions for entities like connections, connectors, data views, dimensions, event queries, and presenters. Configs are managed through the API and persisted in real time.
 
 **Connection**
-A configured, live link between DPUse and a specific instance of a data source — for example, a particular database or a specific account in a SaaS platform. A connection uses a connector as its template and supplies the credentials and endpoint details needed to communicate with that instance. Multiple connections can share the same connector type.
+The stored configuration that a connector plugin uses to open a live channel to a data source. For authenticated connectors (those that require an account), the connection holds credentials and account identifiers — and one connector plugin can have multiple connections, one per account. For unauthenticated connectors (such as emulators), the connection holds only minimal configuration with no credentials, and only one connection per plugin is needed.
 
 See [Connectors and Connections](./connectors-vs-connections.md).
 
