@@ -1,7 +1,7 @@
 {
     "name": "dpuse-kb",
     "description": "The DPUse knowledge base — documentation source and ingestion scripts.",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "private": true,
     "type": "module",
     "engines": {
@@ -23,6 +23,7 @@
     "scripts": {
         "check": "node -e \"import('@dpuse/dpuse-development').then(m => m.checkDependencies())\"",
         "ingest": "op run --env-file=.env -- tsx scripts/ingest.ts",
+        "kv-test": "op run --env-file=.env -- tsx scripts/kvTest.ts",
         "search": "op run --env-file=.env -- tsx scripts/search.ts",
         "sync": "node -e \"import('@dpuse/dpuse-development').then(m => m.syncProjectWithGitHub())\"",
         "type-check": "tsc --noEmit"
