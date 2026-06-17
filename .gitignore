@@ -4,3 +4,8 @@ node_modules
 *.log
 *.tsbuildinfo
 .DS_Store
+
+# VitePress
+site/kb/
+site/.vitepress/dist
+site/.vitepress/cache
