@@ -23,7 +23,13 @@ export default defineConfig({
             '/guides/': [
                 {
                     text: 'Guides',
-                    items: [{ text: 'Introduction', link: '/guides/' }]
+                    items: [
+                        { text: 'Introduction', link: '/guides/' },
+                        { text: 'Data Privacy & Security', link: '/guides/dataPrivacySecurity' },
+                        { text: 'Curated List', link: '/guides/curatedList' },
+                        { text: 'Visualisation Libraries', link: '/guides/visualisationLibraries' },
+                        { text: 'Visualisation Types', link: '/guides/visualisationTypes' }
+                    ]
                 }
             ],
             '/connectors/': [

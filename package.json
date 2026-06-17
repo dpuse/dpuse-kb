@@ -1,7 +1,7 @@
 {
     "name": "dpuse-kb",
     "description": "The DPUse knowledge base — documentation source and ingestion scripts.",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "private": true,
     "type": "module",
     "engines": {
