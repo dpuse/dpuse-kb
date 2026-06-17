@@ -5,7 +5,7 @@
     "assets": {
         "directory": ".vitepress/dist"
     },
-    "routes": [{ "custom_domain": true, "pattern": "docs.dpuse.app", "zone_name": "dpuse.app" }],
+    "routes": [{ "custom_domain": true, "pattern": "www.dpuse.app", "zone_name": "dpuse.app" }],
     "observability": {
         "enabled": true
     },
