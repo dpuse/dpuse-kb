@@ -3,19 +3,21 @@ import { join, relative, extname, basename, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import matter from 'gray-matter';
 
+const kvOnly = process.argv.includes('--kv-only');
+
 const ACCOUNT_ID = process.env['CLOUDFLARE_ACCOUNT_ID'];
 const AI_SEARCH_TOKEN = process.env['CLOUDFLARE_AI_SEARCH_TOKEN'];
 const INSTANCE_ID = process.env['CLOUDFLARE_AI_SEARCH_INSTANCE_ID'];
 const KV_TOKEN = process.env['CLOUDFLARE_API_TOKEN'];
 const KV_NAMESPACE_ID = process.env['CLOUDFLARE_KV_NAMESPACE_ID'];
 
-if (!ACCOUNT_ID || !AI_SEARCH_TOKEN || !INSTANCE_ID) {
+if (!kvOnly && (!ACCOUNT_ID || !AI_SEARCH_TOKEN || !INSTANCE_ID)) {
     console.error('Missing required environment variables: CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_AI_SEARCH_TOKEN, CLOUDFLARE_AI_SEARCH_INSTANCE_ID');
     process.exit(1);
 }
 
-if (!KV_TOKEN || !KV_NAMESPACE_ID) {
-    console.error('Missing required environment variables: CLOUDFLARE_API_TOKEN, CLOUDFLARE_KV_NAMESPACE_ID');
+if (!ACCOUNT_ID || !KV_TOKEN || !KV_NAMESPACE_ID) {
+    console.error('Missing required environment variables: CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN, CLOUDFLARE_KV_NAMESPACE_ID');
     process.exit(1);
 }
 
@@ -108,8 +110,12 @@ interface NavEntry {
 const files = await findMarkdownFiles(DOCS_DIR);
 console.log(`Found ${files.length} markdown files\n`);
 
-// Phase 1: upload to AI Search
-console.log('── AI Search upload ──');
+// Phase 1: read files (+ AI Search upload if not --kv-only)
+if (kvOnly) {
+    console.log('── AI Search upload skipped (--kv-only) ──\n');
+} else {
+    console.log('── AI Search upload ──');
+}
 let aiSearchFailed = 0;
 const navEntries: NavEntry[] = [];
 const docContents: Map<string, string> = new Map();
@@ -127,16 +133,18 @@ for (const file of files) {
     });
     docContents.set(slug, content.trim());
 
-    try {
-        await uploadToAISearch(file, raw);
-        console.log(`uploaded: ${slug}`);
-    } catch (err) {
-        console.error(`failed:   ${slug} — ${err instanceof Error ? err.message : err}`);
-        aiSearchFailed++;
+    if (!kvOnly) {
+        try {
+            await uploadToAISearch(file, raw);
+            console.log(`uploaded: ${slug}`);
+        } catch (err) {
+            console.error(`failed:   ${slug} — ${err instanceof Error ? err.message : err}`);
+            aiSearchFailed++;
+        }
     }
 }
 
-console.log(`\nAI Search: ${files.length - aiSearchFailed} uploaded, ${aiSearchFailed} failed\n`);
+if (!kvOnly) console.log(`\nAI Search: ${files.length - aiSearchFailed} uploaded, ${aiSearchFailed} failed\n`);
 
 // Phase 2: write to KV
 console.log('── KV write ──');
@@ -170,4 +178,4 @@ for (const [slug, content] of docContents) {
 const kvTotal = 1 + docContents.size;
 console.log(`\nKV: ${kvTotal - kvFailed} written, ${kvFailed} failed`);
 
-if (aiSearchFailed > 0 || kvFailed > 0) process.exit(1);
+if ((!kvOnly && aiSearchFailed > 0) || kvFailed > 0) process.exit(1);

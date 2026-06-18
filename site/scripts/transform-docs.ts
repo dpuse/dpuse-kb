@@ -26,3 +26,12 @@ function transform(content: string): string {
 fs.rmSync(DEST, { recursive: true, force: true });
 copyDir(SRC, DEST);
 console.log(`Transformed docs from ${SRC} → ${DEST}`);
+
+const CONNECTORS_SRC = path.resolve(import.meta.dirname, "../../docs/connectors");
+const CONNECTORS_DEST = path.resolve(import.meta.dirname, "../connectors");
+
+if (fs.existsSync(CONNECTORS_SRC)) {
+    fs.rmSync(CONNECTORS_DEST, { recursive: true, force: true });
+    copyDir(CONNECTORS_SRC, CONNECTORS_DEST);
+    console.log(`Transformed connectors from ${CONNECTORS_SRC} → ${CONNECTORS_DEST}`);
+}

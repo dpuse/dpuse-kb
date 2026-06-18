@@ -1,4 +1,21 @@
 import { defineConfig } from 'vitepress';
+import fs from 'node:fs';
+import path from 'node:path';
+
+function buildConnectorsSidebar(): { text: string; link: string }[] {
+    const dir = path.resolve(import.meta.dirname, '../connectors');
+    if (!fs.existsSync(dir)) return [];
+    return fs
+        .readdirSync(dir)
+        .filter((f) => f.endsWith('.md') && f !== 'index.md')
+        .map((f) => {
+            const content = fs.readFileSync(path.join(dir, f), 'utf-8');
+            const match = content.match(/^title:\s*(.+)$/m);
+            const text = match ? match[1]!.trim() : f.replace('.md', '');
+            return { text, link: `/connectors/${f.replace('.md', '')}` };
+        })
+        .sort((a, b) => a.text.localeCompare(b.text));
+}
 
 export default defineConfig({
     title: 'DPUse',
@@ -35,7 +52,7 @@ export default defineConfig({
             '/connectors/': [
                 {
                     text: 'Connectors',
-                    items: [{ text: 'Introduction', link: '/connectors/' }]
+                    items: [{ text: 'Introduction', link: '/connectors/' }, ...buildConnectorsSidebar()]
                 }
             ],
             '/context/': [

@@ -1,7 +1,7 @@
 {
     "name": "dpuse-kb",
     "description": "The DPUse knowledge base — documentation source and ingestion scripts.",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "private": true,
     "type": "module",
     "engines": {
@@ -22,13 +22,15 @@
     },
     "scripts": {
         "check": "node -e \"import('@dpuse/dpuse-development').then(m => m.checkDependencies())\"",
-        "ingest": "op run --env-file=.env -- tsx scripts/ingest.ts",
+        "fetch-connectors": "tsx scripts/fetch-connectors.ts",
+        "ingest": "npm run fetch-connectors && op run --env-file=.env -- tsx scripts/ingest.ts",
+        "ingest:kv": "npm run fetch-connectors && op run --env-file=.env -- tsx scripts/ingest.ts --kv-only",
         "kv-test": "op run --env-file=.env -- tsx scripts/kvTest.ts",
         "search": "op run --env-file=.env -- tsx scripts/search.ts",
         "sync": "node -e \"import('@dpuse/dpuse-development').then(m => m.syncProjectWithGitHub())\"",
         "type-check": "tsc --noEmit",
         "site:dev": "npm run dev --prefix site",
-        "site:build": "npm run build --prefix site",
-        "site:deploy": "npm run deploy --prefix site"
+        "site:build": "npm run ingest:kv && npm run build --prefix site",
+        "site:deploy": "npm run ingest:kv && npm run deploy --prefix site"
     }
 }
