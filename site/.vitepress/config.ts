@@ -20,6 +20,7 @@ export default defineConfig({
             copyright: 'Copyright © 2026-present Jonathan Terrell'
         },
         logo: '/images/favicon.svg',
+        // siteTitle: 'DPUse',
 
         nav: [
             { text: 'Guide', link: '/guide/' },
@@ -87,6 +88,21 @@ export default defineConfig({
                 {
                     text: 'Introduction',
                     items: [{ text: 'What is the Context?', link: '/context/' }]
+                },
+                {
+                    text: 'Areas',
+                    items: buildContextAreasSidebar()
+                },
+                {
+                    text: 'Indexes',
+                    items: [
+                        { text: 'Characteristics', link: '' },
+                        { text: 'Measures', link: '' },
+                        { text: 'Dimensions', link: '' },
+                        { text: 'Entities', link: '' },
+                        { text: 'Events', link: '' },
+                        { text: 'Models', link: '' }
+                    ]
                 }
             ],
             '/presenters/': [
@@ -104,7 +120,11 @@ export default defineConfig({
             '/blog/': [
                 {
                     text: 'Blog',
-                    items: [{ text: 'All Posts', link: '/blog/' }]
+                    items: [
+                        { text: 'All Posts', link: '/blog/' },
+                        { text: 'Entity / Event Models', link: '/blog/entity-event-models' },
+                        { text: 'Local First & Data without SaaS', link: '/blog/local-first-data-without-saas' }
+                    ]
                 }
             ]
         },
@@ -114,6 +134,23 @@ export default defineConfig({
 });
 
 // ── Helpers ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+function buildContextAreasSidebar(): { text: string; link: string; items?: { text: string; link: string }[] }[] {
+    const jsonPath = path.resolve(import.meta.dirname, '../scripts/defaultContext.json');
+    if (!fs.existsSync(jsonPath)) return [];
+    const { areas } = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
+    return areas.map((area: { id: string; label: string; models: { id: string; label: string }[] }) => ({
+        text: area.label,
+        link: `/context/${area.id}`,
+        ...(area.models?.length > 0 && {
+            collapsed: true,
+            items: area.models.map((model) => ({
+                text: model.label,
+                link: `/context/${area.id}/${model.id}`
+            }))
+        })
+    }));
+}
 
 function buildConnectorsSidebar(): { text: string; items: { text: string; link: string }[] }[] {
     const CONNECTOR_CATEGORIES: Record<string, string> = {

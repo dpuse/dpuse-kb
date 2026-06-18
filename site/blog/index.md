@@ -2,6 +2,9 @@
 title: Blog
 ---
 
-# Blog
+Updates, guides, and news from the DPUse team.
 
-Updates, guides, and news from the DPUse team. Coming soon.
+## Posts
+
+- [Entity / Event Models](./entity-event-models)
+- [Local First & Data without SaaS](./local-first-data-without-saas)

@@ -1,0 +1,32 @@
+{
+    "id": "default",
+    "label": "Default",
+    "description": "",
+    "areas": [
+        {
+            "id": "core",
+            "label": "Core",
+            "description": "",
+            "models": [
+                { "id": "assets", "label": "Assets", "description": "", "dimensionGroups": [], "entityGroups": [], "secondaryMeasureGroups": [] },
+                { "id": "locations", "label": "Locations", "description": "", "dimensionGroups": [], "entityGroups": [], "secondaryMeasureGroups": [] }
+            ]
+        },
+        { "id": "fa", "label": "Finance & Accounting", "description": "", "models": [] },
+        {
+            "id": "hr",
+            "label": "People & HR",
+            "description": "",
+            "models": [
+                { "id": "workforce", "label": "Workforce", "description": "", "dimensionGroups": [], "entityGroups": [], "secondaryMeasureGroups": [] },
+                { "id": "attendance", "label": "Attendance", "description": "", "dimensionGroups": [], "entityGroups": [], "secondaryMeasureGroups": [] }
+            ]
+        },
+        { "id": "sm", "label": "Sales & Marketing", "description": "", "models": [] },
+        { "id": "cs", "label": "Customer Service", "description": "", "models": [] },
+        { "id": "pp", "label": "Product & Platform", "description": "", "models": [] },
+        { "id": "sco", "label": "Supply Chain & Operations", "description": "", "models": [] },
+        { "id": "ex", "label": "External & Third Party", "description": "", "models": [] },
+        { "id": "grv", "label": "Governance, Risk, & Compliance", "description": "", "models": [] }
+    ]
+}

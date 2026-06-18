@@ -85,3 +85,74 @@ if (fs.existsSync(CONNECTORS_SRC)) {
     copyDir(CONNECTORS_SRC, CONNECTORS_DEST);
     console.log(`Transformed connect from ${CONNECTORS_SRC} → ${CONNECTORS_DEST}`);
 }
+
+generateContextAreas();
+console.log(`Generated context area pages`);
+
+// ── Context Areas ─────────────────────────────────────────────────────────────
+
+interface ContextModel {
+    id: string;
+    label: string;
+    description: string;
+}
+
+interface ContextArea {
+    id: string;
+    label: string;
+    description: string;
+    models: ContextModel[];
+}
+
+function generateContextAreas(): void {
+    const jsonPath = path.resolve(import.meta.dirname, 'defaultContext.json');
+    if (!fs.existsSync(jsonPath)) return;
+
+    const { areas }: { areas: ContextArea[] } = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
+    const dest = path.resolve(import.meta.dirname, '../context');
+    fs.mkdirSync(dest, { recursive: true });
+
+    for (const area of areas) {
+        const areaLines = [
+            `---`,
+            `title: ${area.label}`,
+            `---`,
+            ``,
+            `# ${area.label}`,
+            ``
+        ];
+
+        if (area.description) areaLines.push(area.description, ``);
+
+        if (area.models.length > 0) {
+            areaLines.push(`## Models`, ``);
+            areaLines.push(`| Model | Description |`);
+            areaLines.push(`| --- | --- |`);
+            for (const model of area.models) {
+                const desc = model.description || '';
+                areaLines.push(`| [${model.label}](./${area.id}/${model.id}) | ${desc} |`);
+            }
+            areaLines.push(``);
+        }
+
+        fs.writeFileSync(path.join(dest, `${area.id}.md`), areaLines.join('\n'));
+
+        for (const model of area.models) {
+            const modelDir = path.join(dest, area.id);
+            fs.mkdirSync(modelDir, { recursive: true });
+
+            const modelLines = [
+                `---`,
+                `title: ${model.label}`,
+                `---`,
+                ``,
+                `# ${model.label}`,
+                ``
+            ];
+
+            if (model.description) modelLines.push(model.description, ``);
+
+            fs.writeFileSync(path.join(modelDir, `${model.id}.md`), modelLines.join('\n'));
+        }
+    }
+}

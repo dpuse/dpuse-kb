@@ -3,10 +3,12 @@ layout: home
 
 hero:
     name: 'DPUse'
-    text: 'Making it easier to work with data.'
-    tagline: Connect to your data sources, contextualise them into meaningful entities and events, and present the results with precision.
+    # text: 'Making it easier to work with data.'
+    text: 'Data Positioning & Use'
+    # tagline: Connect to your data sources, contextualise them into meaningful entities and events, and present the results with precision.
+    tagline: A research and development project designed to simplify working with all-sized datasets using standard desktop hardware.
     image:
-        src: /public/images/favicon.svg
+        src: /images/favicon.svg
         alt: DPUse
     actions:
         - theme: alt
