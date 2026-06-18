@@ -21,6 +21,9 @@ features:
       details: Build reusable entities and events from your data — customers, transactions, measures — and derive consistent, comparable insights from them.
       link: /contextualise
     - title: Present
-      details: Surface positioned data in predefined presentations for fast, consistent access — or use the Cookbook to build custom views with your preferred toolset.
+      details: Surface positioned data in predefined presentations for fast, consistent access.
       link: /present
+    - title: Cookbook
+      details: Build custom presentations and data apps using your preferred toolsets, guided by practical recipes with step-by-step instructions and code.
+      link: /cookbook
 ---

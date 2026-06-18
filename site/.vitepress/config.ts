@@ -22,10 +22,15 @@ export default defineConfig({
 
         nav: [
             { text: 'Guide', link: '/guide/' },
-            { text: 'Connect', link: '/connect/' },
-            { text: 'Contextualise', link: '/contextualise/' },
-            { text: 'Present', link: '/present/' },
-            { text: 'Cookbook', link: '/cookbook/' },
+            {
+                text: 'Workflow', // Or 'Features', 'Workflow'
+                items: [
+                    { text: 'Connect', link: '/connect/' },
+                    { text: 'Contextualise', link: '/contextualise/' },
+                    { text: 'Present', link: '/present/' }
+                ]
+            },
+            { text: 'Data App Recipes', link: '/cookbook/' },
             { text: 'Blog', link: '/blog/' }
         ],
 
