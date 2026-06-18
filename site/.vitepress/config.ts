@@ -18,6 +18,7 @@ function buildConnectorsSidebar(): { text: string; link: string }[] {
 }
 
 export default defineConfig({
+    head: [['link', { rel: 'icon', href: '/images/favicon.ico' }]],
     title: 'DPUse',
     description: 'Data positioning for modern applications.',
     srcDir: '.',
@@ -25,6 +26,11 @@ export default defineConfig({
     ignoreDeadLinks: true, // KB docs contain internal app links; transform script will rewrite these
 
     themeConfig: {
+        externalLinkIcon: true,
+        footer: {
+            copyright: 'Released under the MIT License.'
+        },
+        logo: '/images/favicon.svg',
         nav: [
             { text: 'Guides', link: '/guides/' },
             { text: 'Connectors', link: '/connectors/' },
