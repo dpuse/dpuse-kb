@@ -5,6 +5,9 @@ hero:
     name: 'DPUse'
     text: 'Making it easier to work with data.'
     tagline: Connect to your data sources, contextualise them into meaningful entities and events, and present the results with precision.
+    image:
+        src: /public/images/favicon.svg
+        alt: DPUse
     actions:
         - theme: alt
           text: What is DPUse?
@@ -23,3 +26,12 @@ features:
     - title: Build Data Apps
       details: Build custom presentations and data apps using your preferred toolsets, guided by practical recipes with step-by-step instructions and code.
 ---
+
+## Getting Started
+
+You can get started using VitePress right away using `npx`!
+
+```sh
+npm init
+npx vitepress init
+```

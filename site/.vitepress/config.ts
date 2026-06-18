@@ -16,7 +16,8 @@ export default defineConfig({
     themeConfig: {
         externalLinkIcon: true,
         footer: {
-            copyright: 'Released under the MIT License.'
+            message: 'Released under the MIT License.',
+            copyright: 'Copyright © 2026-present Jonathan Terrell'
         },
         logo: '/images/favicon.svg',
 
