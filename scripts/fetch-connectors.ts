@@ -3,7 +3,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const BASE_URL = 'https://api.dpuse.app';
-const CONNECTORS_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'docs', 'connectors');
+const CONNECTORS_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'docs', 'connect');
 
 // ── Types ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
