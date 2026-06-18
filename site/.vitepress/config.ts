@@ -122,8 +122,10 @@ export default defineConfig({
                     text: 'Blog',
                     items: [
                         { text: 'All Posts', link: '/blog/' },
-                        { text: 'Entity / Event Models', link: '/blog/entity-event-models' },
-                        { text: 'Local First & Data without SaaS', link: '/blog/local-first-data-without-saas' }
+                        { text: 'The Entity/Event Model', link: '/blog/the-entity-event-model' },
+                        { text: 'Local First & Data without SaaS', link: '/blog/local-first-data-without-saas' },
+                        { text: 'A Choice of Technologies', link: '/blog/a-choice-of-technologies' },
+                        { text: 'Bring your own API Key', link: '/blog/bring-your-own-api-key' }
                     ]
                 }
             ]
