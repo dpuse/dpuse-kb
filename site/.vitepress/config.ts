@@ -22,24 +22,20 @@ export default defineConfig({
 
         nav: [
             { text: 'Guide', link: '/guide/' },
-            {
-                text: 'Workflow', // Or 'Features', 'Workflow'
-                items: [
-                    { text: 'Connect', link: '/connect/' },
-                    { text: 'Contextualise', link: '/contextualise/' },
-                    { text: 'Present', link: '/present/' }
-                ]
-            },
-            { text: 'Data App Recipes', link: '/cookbook/' },
+            { text: 'Connectors', link: '/connectors/' },
+            { text: 'Context', link: '/context/' },
+            { text: 'Presenters', link: '/presenters/' },
+            { text: 'Cookbook', link: '/cookbook/' },
             { text: 'Blog', link: '/blog/' }
         ],
 
         sidebar: {
             '/guide/': [
                 {
-                    text: 'Getting Started',
+                    text: 'Introduction',
                     items: [
                         { text: 'What is DPUse?', link: '/guide/getting-started/what-is-dpuse' },
+                        { text: 'Getting Started', link: '' },
                         { text: 'Quick Start', link: '/guide/getting-started/quick-start' },
                         { text: 'Account Setup', link: '/guide/getting-started/account-setup' }
                     ]
@@ -55,6 +51,18 @@ export default defineConfig({
                         { text: 'Glossary', link: '/guide/concepts/glossary' },
                         { text: 'Data Privacy & Security', link: '/guide/concepts/dataPrivacySecurity' }
                     ]
+                },
+                {
+                    text: 'Using the Workbench',
+                    items: [{ text: 'Placeholder', link: '' }]
+                },
+                {
+                    text: 'Using AI',
+                    items: [{ text: 'Placeholder', link: '' }]
+                },
+                {
+                    text: 'Managing your Account',
+                    items: [{ text: 'Placeholder', link: '' }]
                 },
                 {
                     text: 'Plugins',
@@ -73,28 +81,23 @@ export default defineConfig({
                     ]
                 }
             ],
-            '/connect/': [
+            '/connectors/': [{ text: 'What is a Connector?', items: [{ text: 'Introduction', link: '/connectors/' }] }, ...buildConnectorsSidebar()],
+            '/context/': [
                 {
-                    text: 'Connect',
-                    items: [{ text: 'Introduction', link: '/connect/' }, ...buildConnectorsSidebar()]
+                    text: 'Introduction',
+                    items: [{ text: 'What is the Context?', link: '/context/' }]
                 }
             ],
-            '/contextualise/': [
+            '/presenters/': [
                 {
-                    text: 'Contextualise',
-                    items: [{ text: 'Introduction', link: '/contextualise/' }]
-                }
-            ],
-            '/present/': [
-                {
-                    text: 'Present',
-                    items: [{ text: 'Introduction', link: '/present/' }]
+                    text: 'Introduction',
+                    items: [{ text: 'What is a Presenter?', link: '/presenters/' }]
                 }
             ],
             '/cookbook/': [
                 {
-                    text: 'Cookbook',
-                    items: [{ text: 'Introduction', link: '/cookbook/' }]
+                    text: 'Introduction',
+                    items: [{ text: 'What is a Recipe?', link: '/cookbook/' }]
                 }
             ],
             '/blog/': [
@@ -111,17 +114,36 @@ export default defineConfig({
 
 // ── Helpers ──────────────────────────────────────────────────────────────────────────────────────────────────────────
 
-function buildConnectorsSidebar(): { text: string; link: string }[] {
-    const dir = path.resolve(import.meta.dirname, '../connect');
+function buildConnectorsSidebar(): { text: string; items: { text: string; link: string }[] }[] {
+    const CONNECTOR_CATEGORIES: Record<string, string> = {
+        application: 'Application',
+        curatedDataset: 'Curated Dataset',
+        database: 'Database',
+        fileStore: 'File Store'
+    };
+    const CATEGORY_ORDER = ['Application', 'Curated Dataset', 'Database', 'File Store'];
+
+    const dir = path.resolve(import.meta.dirname, '../connectors');
     if (!fs.existsSync(dir)) return [];
-    return fs
-        .readdirSync(dir)
-        .filter((f) => f.endsWith('.md') && f !== 'index.md')
-        .map((f) => {
-            const content = fs.readFileSync(path.join(dir, f), 'utf-8');
-            const match = content.match(/^title:\s*(.+)$/m);
-            const text = match ? match[1]!.trim() : f.replace('.md', '');
-            return { text, link: `/connect/${f.replace('.md', '')}` };
-        })
-        .sort((a, b) => a.text.localeCompare(b.text));
+
+    const groups = new Map<string, { text: string; link: string }[]>();
+    for (const cat of CATEGORY_ORDER) groups.set(cat, []);
+
+    for (const f of fs.readdirSync(dir).filter((f) => f.endsWith('.md') && f !== 'index.md')) {
+        const content = fs.readFileSync(path.join(dir, f), 'utf-8');
+        const titleMatch = content.match(/^title:\s*(.+)$/m);
+        const tagsMatch = content.match(/^tags:\s*\[([^\]]+)\]/m);
+        const text = titleMatch ? titleMatch[1]!.trim() : f.replace('.md', '');
+        const tags = tagsMatch ? tagsMatch[1]!.split(',').map((t) => t.trim()) : [];
+        const categoryKey = tags.find((t) => t in CONNECTOR_CATEGORIES) ?? 'application';
+        const category = CONNECTOR_CATEGORIES[categoryKey]!;
+        groups.get(category)!.push({ text, link: `/connectors/${f.replace('.md', '')}` });
+    }
+
+    for (const items of groups.values()) items.sort((a, b) => a.text.localeCompare(b.text));
+
+    return CATEGORY_ORDER.filter((cat) => groups.get(cat)!.length > 0).map((cat) => ({
+        text: cat,
+        items: groups.get(cat)!
+    }));
 }

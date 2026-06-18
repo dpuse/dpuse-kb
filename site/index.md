@@ -14,16 +14,12 @@ hero:
           link: https://my.dpuse.app
 
 features:
-    - title: Connect
+    - title: Source Data
       details: Bring data in from any source with flexible connector plugins.
-      link: /connect
     - title: Contextualise
       details: Build reusable entities and events from your data — customers, transactions, measures — and derive consistent, comparable insights from them.
-      link: /contextualise
-    - title: Present
+    - title: Explore Results
       details: Surface positioned data in predefined presentations for fast, consistent access.
-      link: /present
-    - title: Cookbook
+    - title: Build Data Apps
       details: Build custom presentations and data apps using your preferred toolsets, guided by practical recipes with step-by-step instructions and code.
-      link: /cookbook
 ---
