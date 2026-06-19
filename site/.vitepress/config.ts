@@ -1,7 +1,23 @@
 // ── External Dependencies & Registrations
-import { defineConfig } from 'vitepress';
+import { defineConfig, type DefaultTheme } from 'vitepress';
 import fs from 'node:fs';
 import path from 'node:path';
+
+// ── Connector Metadata ───────────────────────────────────────────────────────────────────────────────────────────────
+
+const CONNECTOR_CATEGORIES: Record<string, string> = {
+    application: 'Application',
+    curatedDataset: 'Curated Dataset',
+    database: 'Database',
+    fileStore: 'File Store'
+};
+const CONNECTOR_CATEGORY_ORDER = ['Application', 'Curated Dataset', 'Database', 'File Store'];
+const CONNECTOR_CATEGORY_SLUGS: Record<string, string> = {
+    'Application': 'application',
+    'Curated Dataset': 'curated-dataset',
+    'Database': 'database',
+    'File Store': 'file-store'
+};
 
 // ── VitePress Configuration ──────────────────────────────────────────────────────────────────────────────────────────
 
@@ -24,7 +40,7 @@ export default defineConfig({
 
         nav: [
             { text: 'Guide', link: '/guide/' },
-            { text: 'Connectors', link: '/connectors/' },
+            { text: 'Connectors', activeMatch: '/connectors/', items: buildConnectorsNav() },
             { text: 'Context', link: '/context/' },
             { text: 'Presenters', link: '/presenters/' },
             { text: 'Cookbook', link: '/cookbook/' },
@@ -85,7 +101,11 @@ export default defineConfig({
                     ]
                 }
             ],
-            '/connectors/': [{ text: 'Introduction', items: [{ text: 'What is a Connector?', link: '/connectors/' }] }, ...buildConnectorsSidebar()],
+            '/connectors/': [
+                { text: 'Introduction', items: [{ text: 'What is a Connector?', link: '/connectors/' }] },
+                ...buildConnectorsSidebar(),
+                { text: 'Building Connectors', items: [{ text: 'Overview', link: '/connectors/building-connectors/' }] }
+            ],
             '/context/': [
                 {
                     text: 'Introduction',
@@ -156,20 +176,12 @@ function buildContextAreasSidebar(): { text: string; link: string; items?: { tex
     }));
 }
 
-function buildConnectorsSidebar(): { text: string; items: { text: string; link: string }[] }[] {
-    const CONNECTOR_CATEGORIES: Record<string, string> = {
-        application: 'Application',
-        curatedDataset: 'Curated Dataset',
-        database: 'Database',
-        fileStore: 'File Store'
-    };
-    const CATEGORY_ORDER = ['Application', 'Curated Dataset', 'Database', 'File Store'];
+function loadConnectorGroups(): Map<string, { text: string; link: string }[]> {
+    const groups = new Map<string, { text: string; link: string }[]>();
+    for (const cat of CONNECTOR_CATEGORY_ORDER) groups.set(cat, []);
 
     const dir = path.resolve(import.meta.dirname, '../connectors');
-    if (!fs.existsSync(dir)) return [];
-
-    const groups = new Map<string, { text: string; link: string }[]>();
-    for (const cat of CATEGORY_ORDER) groups.set(cat, []);
+    if (!fs.existsSync(dir)) return groups;
 
     for (const f of fs.readdirSync(dir).filter((f) => f.endsWith('.md') && f !== 'index.md')) {
         const content = fs.readFileSync(path.join(dir, f), 'utf-8');
@@ -184,8 +196,26 @@ function buildConnectorsSidebar(): { text: string; items: { text: string; link: 
 
     for (const items of groups.values()) items.sort((a, b) => a.text.localeCompare(b.text));
 
-    return CATEGORY_ORDER.filter((cat) => groups.get(cat)!.length > 0).map((cat) => ({
+    return groups;
+}
+
+function buildConnectorsNav(): DefaultTheme.NavItemWithLink[] {
+    const groups = loadConnectorGroups();
+    const items: DefaultTheme.NavItemWithLink[] = [{ text: 'What is a Connector?', link: '/connectors/' }];
+    for (const cat of CONNECTOR_CATEGORY_ORDER) {
+        if (groups.get(cat)!.length > 0) {
+            items.push({ text: cat, link: `/connectors/${CONNECTOR_CATEGORY_SLUGS[cat]!}/` });
+        }
+    }
+    items.push({ text: 'Building Connectors', link: '/connectors/building-connectors/' });
+    return items;
+}
+
+function buildConnectorsSidebar(): { text: string; link?: string; items: { text: string; link: string }[] }[] {
+    const groups = loadConnectorGroups();
+    return CONNECTOR_CATEGORY_ORDER.filter((cat) => groups.get(cat)!.length > 0).map((cat) => ({
         text: cat,
+        link: `/connectors/${CONNECTOR_CATEGORY_SLUGS[cat]!}/`,
         items: groups.get(cat)!
     }));
 }

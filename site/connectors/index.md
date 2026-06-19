@@ -1,8 +1,6 @@
 ---
 title: Connectors
 section: connectors
-tags: [connector, overview]
-audience: user
 ---
 
 # Connectors
@@ -29,3 +27,12 @@ Connectors progress through a lifecycle before reaching general availability:
 
 - [Connectors vs Connections](/kb/concepts/connectors-vs-connections) — understand the distinction between a connector plugin and a connection config
 - [Plugins](/kb/concepts/plugins) — how connectors fit into the broader plugin system
+
+## All Connectors
+
+| Connector | Category |
+| --------- | -------- |
+| [Dexie.js](/connectors/dpuse-connector-dexie-js) | Database |
+| [DPUse Application Emulator](/connectors/dpuse-connector-application-emulator) | Application |
+| [DPUse File Store Emulator](/connectors/dpuse-connector-file-store-emulator) | File Store |
+| [Dropbox](/connectors/dpuse-connector-dropbox) | File Store |

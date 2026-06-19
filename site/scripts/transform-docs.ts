@@ -80,14 +80,127 @@ console.log(`Generated guide/index.md`);
 const CONNECTORS_SRC = path.resolve(import.meta.dirname, '../../docs/connectors');
 const CONNECTORS_DEST = path.resolve(import.meta.dirname, '../connectors');
 
+const CONNECTOR_CATEGORY_LABELS: Record<string, string> = {
+    application: 'Application',
+    curatedDataset: 'Curated Dataset',
+    database: 'Database',
+    fileStore: 'File Store'
+};
+
+const CONNECTOR_CATEGORY_SLUGS: Record<string, string> = {
+    application: 'application',
+    curatedDataset: 'curated-dataset',
+    database: 'database',
+    fileStore: 'file-store'
+};
+
 if (fs.existsSync(CONNECTORS_SRC)) {
     fs.rmSync(CONNECTORS_DEST, { recursive: true, force: true });
     copyDir(CONNECTORS_SRC, CONNECTORS_DEST);
     console.log(`Transformed connectors from ${CONNECTORS_SRC} → ${CONNECTORS_DEST}`);
 }
 
+generateConnectorCategories();
+console.log(`Generated connector category pages`);
+
+generateConnectorsIndex();
+console.log(`Generated connectors index`);
+
 generateContextAreas();
 console.log(`Generated context area pages`);
+
+// ── Connectors Index ──────────────────────────────────────────────────────
+
+function generateConnectorsIndex(): void {
+    if (!fs.existsSync(CONNECTORS_DEST)) return;
+
+    const connectors: { title: string; file: string; category: string }[] = [];
+
+    for (const f of fs.readdirSync(CONNECTORS_DEST)) {
+        if (!f.endsWith('.md') || f === 'index.md') continue;
+        const content = fs.readFileSync(path.join(CONNECTORS_DEST, f), 'utf-8');
+        const fm = extractFrontmatter(content);
+        const categoryId = fm['category'] ?? '';
+        connectors.push({
+            title: fm['title'] ?? f.replace('.md', ''),
+            file: f.replace('.md', ''),
+            category: CONNECTOR_CATEGORY_LABELS[categoryId] ?? categoryId
+        });
+    }
+
+    connectors.sort((a, b) => a.title.localeCompare(b.title));
+
+    const intro = fs.readFileSync(path.join(CONNECTORS_SRC, 'index.md'), 'utf-8');
+    const introBody = intro.replace(/^---[\s\S]*?---\n/, '').trimStart();
+
+    const lines = [
+        `---`,
+        `title: Connectors`,
+        `section: connectors`,
+        `---`,
+        ``,
+        introBody.trimEnd(),
+        ``,
+        `## All Connectors`,
+        ``,
+        `| Connector | Category |`,
+        `| --------- | -------- |`,
+        ...connectors.map((c) => `| [${c.title}](/connectors/${c.file}) | ${c.category} |`),
+        ``
+    ];
+
+    fs.writeFileSync(path.join(CONNECTORS_DEST, 'index.md'), lines.join('\n'));
+}
+
+// ── Connector Categories ──────────────────────────────────────────────────
+
+function generateConnectorCategories(): void {
+    if (!fs.existsSync(CONNECTORS_DEST)) return;
+
+    const groups = new Map<string, { title: string; file: string; description: string }[]>();
+
+    for (const f of fs.readdirSync(CONNECTORS_DEST)) {
+        if (!f.endsWith('.md') || f === 'index.md') continue;
+        const content = fs.readFileSync(path.join(CONNECTORS_DEST, f), 'utf-8');
+        const fm = extractFrontmatter(content);
+        const categoryId = fm['category'] ?? '';
+        if (!categoryId || !(categoryId in CONNECTOR_CATEGORY_SLUGS)) continue;
+
+        const body = content.slice(content.indexOf('---', 3) + 3);
+        const description =
+            body
+                .split(/\n\n+/)
+                .map((p) => p.trim())
+                .find((p) => p && !p.startsWith('#') && !p.startsWith('<') && !p.startsWith('|')) ?? '';
+
+        const items = groups.get(categoryId) ?? [];
+        items.push({ title: fm['title'] ?? f.replace('.md', ''), file: f.replace('.md', ''), description });
+        groups.set(categoryId, items);
+    }
+
+    for (const [categoryId, connectors] of groups) {
+        const label = CONNECTOR_CATEGORY_LABELS[categoryId] ?? categoryId;
+        const slug = CONNECTOR_CATEGORY_SLUGS[categoryId]!;
+        const dir = path.join(CONNECTORS_DEST, slug);
+        fs.mkdirSync(dir, { recursive: true });
+
+        connectors.sort((a, b) => a.title.localeCompare(b.title));
+
+        const lines = [
+            `---`,
+            `title: ${label} Connectors`,
+            `section: connectors`,
+            `---`,
+            ``,
+            `# ${label} Connectors`,
+            ``,
+            ...connectors.map((c) => `- [${c.title}](/connectors/${c.file})${c.description ? ` — ${c.description}` : ''}`),
+            ``
+        ];
+
+        fs.writeFileSync(path.join(dir, 'index.md'), lines.join('\n'));
+    }
+}
 
 // ── Context Areas ─────────────────────────────────────────────────────────────
 
