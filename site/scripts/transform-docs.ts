@@ -71,19 +71,19 @@ function generateIndex(dest: string): void {
 }
 
 fs.rmSync(DEST, { recursive: true, force: true });
-copyDir(SRC, DEST, ['connect']); // connect/ has its own pipeline below
+copyDir(SRC, DEST, ['connectors']); // connectors/ has its own pipeline below
 console.log(`Transformed docs from ${SRC} → ${DEST}`);
 
 generateIndex(DEST);
 console.log(`Generated guide/index.md`);
 
-const CONNECTORS_SRC = path.resolve(import.meta.dirname, '../../docs/connect');
+const CONNECTORS_SRC = path.resolve(import.meta.dirname, '../../docs/connectors');
 const CONNECTORS_DEST = path.resolve(import.meta.dirname, '../connectors');
 
 if (fs.existsSync(CONNECTORS_SRC)) {
     fs.rmSync(CONNECTORS_DEST, { recursive: true, force: true });
     copyDir(CONNECTORS_SRC, CONNECTORS_DEST);
-    console.log(`Transformed connect from ${CONNECTORS_SRC} → ${CONNECTORS_DEST}`);
+    console.log(`Transformed connectors from ${CONNECTORS_SRC} → ${CONNECTORS_DEST}`);
 }
 
 generateContextAreas();

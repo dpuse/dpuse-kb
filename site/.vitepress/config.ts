@@ -11,10 +11,10 @@ export default defineConfig({
     description: 'Data positioning for modern applications.',
     srcDir: '.',
     outDir: '.vitepress/dist',
-    ignoreDeadLinks: true, // KB docs contain internal app links; transform script will rewrite these
+    ignoreDeadLinks: true, // KB docs contain internal app links; transform script will rewrite these.
 
     themeConfig: {
-        externalLinkIcon: true,
+        externalLinkIcon: true, // Adds an arrow icon next to external links automatically.
         footer: {
             message: 'Released under the MIT License.',
             copyright: 'Copyright © 2026-present Jonathan Terrell'
@@ -30,6 +30,8 @@ export default defineConfig({
             { text: 'Cookbook', link: '/cookbook/' },
             { text: 'Blog', link: '/blog/' }
         ],
+
+        outline: [2, 3], // Shows heading levels H2 and H3 in the right-side table of contents.
 
         sidebar: {
             '/guide/': [
@@ -83,7 +85,7 @@ export default defineConfig({
                     ]
                 }
             ],
-            '/connectors/': [{ text: 'What is a Connector?', items: [{ text: 'Introduction', link: '/connectors/' }] }, ...buildConnectorsSidebar()],
+            '/connectors/': [{ text: 'Introduction', items: [{ text: 'What is a Connector?', link: '/connectors/' }] }, ...buildConnectorsSidebar()],
             '/context/': [
                 {
                     text: 'Introduction',

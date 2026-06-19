@@ -17,7 +17,7 @@ The platform is built around three core activities: Connect, Contextualise, and 
 
 You connect DPUse to your data sources using **connectors** — plugins that know how to communicate with a specific vendor product (a database, a SaaS platform, a file store). Each connector can have one or more **connections** representing individual accounts or credentials. From a connection you create **data views**: scoped selections of data, ready to inspect and work with.
 
-See the [Connect](/connect/) section for a full list of available connectors.
+See the [Connectors](/connectors/) section for a full list of available connectors.
 
 ### Contextualise
 
@@ -57,5 +57,5 @@ DPUse is designed for people who work with data professionally — analysts, dat
 
 - [Quick Start](./quick-start.md)
 - [Account Setup](./account-setup.md)
-- [Connect](/connect/)
+- [Connectors](/connectors/)
 - [Cookbook](/cookbook/)
