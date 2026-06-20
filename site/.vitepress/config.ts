@@ -1,7 +1,8 @@
 // ── External Dependencies & Registrations
-import { defineConfig, type DefaultTheme } from 'vitepress';
+import { defineConfig } from 'vitepress';
 import fs from 'node:fs';
 import path from 'node:path';
+import mkcert from 'vite-plugin-mkcert';
 
 // ── Connector Metadata ───────────────────────────────────────────────────────────────────────────────────────────────
 
@@ -22,6 +23,7 @@ const CONNECTOR_CATEGORY_SLUGS: Record<string, string> = {
 // ── VitePress Configuration ──────────────────────────────────────────────────────────────────────────────────────────
 
 export default defineConfig({
+    vite: { plugins: [mkcert()] },
     head: [['link', { rel: 'icon', href: '/images/favicon.ico' }]],
     title: 'DPUse',
     description: 'Data positioning for modern applications.',
@@ -40,7 +42,7 @@ export default defineConfig({
 
         nav: [
             { text: 'Guide', link: '/guide/' },
-            { text: 'Connectors', activeMatch: '/connectors/', items: buildConnectorsNav() },
+            { text: 'Connectors', link: '/connectors/', activeMatch: '/connectors/' },
             { text: 'Context', link: '/context/' },
             { text: 'Presenters', link: '/presenters/' },
             { text: 'Cookbook', link: '/cookbook/' },
@@ -197,18 +199,6 @@ function loadConnectorGroups(): Map<string, { text: string; link: string }[]> {
     for (const items of groups.values()) items.sort((a, b) => a.text.localeCompare(b.text));
 
     return groups;
-}
-
-function buildConnectorsNav(): DefaultTheme.NavItemWithLink[] {
-    const groups = loadConnectorGroups();
-    const items: DefaultTheme.NavItemWithLink[] = [{ text: 'What is a Connector?', link: '/connectors/' }];
-    for (const cat of CONNECTOR_CATEGORY_ORDER) {
-        if (groups.get(cat)!.length > 0) {
-            items.push({ text: cat, link: `/connectors/${CONNECTOR_CATEGORY_SLUGS[cat]!}/` });
-        }
-    }
-    items.push({ text: 'Building Connectors', link: '/connectors/building-connectors/' });
-    return items;
 }
 
 function buildConnectorsSidebar(): { text: string; link?: string; items: { text: string; link: string }[] }[] {

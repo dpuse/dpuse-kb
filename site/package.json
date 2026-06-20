@@ -12,6 +12,7 @@
     },
     "devDependencies": {
         "tsx": "^4.22.4",
+        "vite-plugin-mkcert": "^2.1.0",
         "vitepress": "^1.6.3",
         "wrangler": "^4.17.0"
     },

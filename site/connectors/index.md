@@ -33,6 +33,6 @@ Connectors progress through a lifecycle before reaching general availability:
 | Connector | Category |
 | --------- | -------- |
 | [Dexie.js](/connectors/dpuse-connector-dexie-js) | Database |
-| [DPUse Application Emulator](/connectors/dpuse-connector-application-emulator) | Application |
-| [DPUse File Store Emulator](/connectors/dpuse-connector-file-store-emulator) | File Store |
+| [DPUse Application](/connectors/dpuse-connector-application-emulator) | Application |
+| [DPUse File Store](/connectors/dpuse-connector-file-store-emulator) | File Store |
 | [Dropbox](/connectors/dpuse-connector-dropbox) | File Store |

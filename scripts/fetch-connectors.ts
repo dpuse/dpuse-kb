@@ -23,6 +23,7 @@ interface PublicConnectorDoc {
     operations: string[];
     implementations: Record<string, ConnectorImplementationDoc>;
     icon: string | null;
+    iconDark: string | null;
     vendorHomeURL: string | null;
     vendorDocumentationURL: string | null;
     vendorAccountURL: string | null;
@@ -103,8 +104,11 @@ function generateMarkdown(connector: PublicConnectorDoc): string {
     const statusBadge = connector.statusId ? (STATUS_BADGE[connector.statusId] ?? 'info') : 'info';
     const tags = ['connector', connector.categoryId, connector.id];
 
+    const iconSlots = connector.icon
+        ? `\n<template #icon>${connector.icon}</template>${connector.iconDark ? `\n<template #iconDark>${connector.iconDark}</template>` : ''}`
+        : '';
     const header = connector.icon
-        ? `<div style="display:flex;align-items:center;gap:1rem">\n<span style="width:48px;height:48px;flex-shrink:0;display:flex;align-items:center">${connector.icon}</span>\n<h1 style="margin:0;border:none;padding:0">${title}</h1>\n</div>\n\n${category} Connector`
+        ? `<ConnectorHeader title="${title}" category="${category}">${iconSlots}\n</ConnectorHeader>`
         : `# ${title}\n${category} Connector`;
 
     let md = `---
