@@ -10,9 +10,9 @@ audience: user
 <template #icon><svg viewBox="0 0 235.45 200"><path fill="#0061ff" d="M58.86 75l58.87-37.5L58.86 0 0 37.5z" /><path fill="#0061ff" d="M176.59 75l58.86-37.5L176.59 0l-58.86 37.5z" /><path fill="#0061ff" d="M117.73 112.5L58.86 75 0 112.5 58.86 150z" /><path fill="#0061ff" d="M176.59 150l58.86-37.5L176.59 75l-58.86 37.5z" /><path fill="#0061ff" d="M176.59 162.5L117.73 125l-58.87 37.5 58.87 37.5z" /></svg></template>
 </ConnectorHeader>
 
-<Badge type="info" text="v0.2.495" /> <Badge type="info" text="Source" /> <Badge type="warning" text="Beta" />
+<Badge type="info" text="v0.2.497" /> <Badge type="info" text="Source" /> <Badge type="warning" text="Beta" />
 
-Provides access to a user's Dropbox account(s) for downloading and uploading files. Dropbox is a cloud-based file storage solution that provides for the storage and sharing of files, as well as synchronising them across multiple devices. Requires the user to authenticate via OAuth 2.0 for each account connected; access is scoped to that account's files and folders only.
+Provides access to Dropbox account(s) for downloading and uploading files. Dropbox is a cloud-based file storage solution designed for storing, sharing, and synchronising files across multiple devices. Requires OAuth 2.0 authentication for each account connected; access is scoped to that account's files and folders only.
 
 ## Authentication
 
