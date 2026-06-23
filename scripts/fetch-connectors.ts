@@ -15,10 +15,9 @@ interface ConnectorImplementationDoc {
 interface PublicConnectorDoc {
     id: string;
     label: { en?: string };
-    description: { en?: string };
+    description: { en?: string[] };
     version: string;
     categoryId: string;
-    usageId: string;
     statusId: string | null;
     operations: string[];
     implementations: Record<string, ConnectorImplementationDoc>;
@@ -38,12 +37,6 @@ const CATEGORY_LABELS: Record<string, string> = {
     fileStore: 'File Store'
 };
 
-const USAGE_LABELS: Record<string, string> = {
-    source: 'Source',
-    destination: 'Destination',
-    bidirectional: 'Bidirectional',
-    unknown: 'Unknown'
-};
 
 const STATUS_LABELS: Record<string, string> = {
     generalAvailability: 'General Availability',
@@ -97,9 +90,9 @@ const OPERATION_LABELS: Record<string, string> = {
 
 function generateMarkdown(connector: PublicConnectorDoc): string {
     const title = connector.label.en ?? connector.id;
-    const description = connector.description.en ?? '';
+    const rawDescription = connector.description.en ?? [];
+    const description = (Array.isArray(rawDescription) ? rawDescription : [rawDescription]).join('\n\n');
     const category = CATEGORY_LABELS[connector.categoryId] ?? connector.categoryId;
-    const usage = USAGE_LABELS[connector.usageId] ?? connector.usageId;
     const status = connector.statusId ? (STATUS_LABELS[connector.statusId] ?? connector.statusId) : 'Unknown';
     const statusBadge = connector.statusId ? (STATUS_BADGE[connector.statusId] ?? 'info') : 'info';
     const tags = ['connector', connector.categoryId, connector.id];
@@ -121,7 +114,7 @@ audience: user
 
 ${header}
 
-<Badge type="info" text="v${connector.version}" /> <Badge type="info" text="${usage}" /> <Badge type="${statusBadge}" text="${status}" />
+<Badge type="info" text="v${connector.version}" /> <Badge type="${statusBadge}" text="${status}" />
 
 ${description}
 `;
