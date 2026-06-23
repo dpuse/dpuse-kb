@@ -1,6 +1,8 @@
 import { writeFile, mkdir } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { generateConnectorOperationsTable } from '@dpuse/dpuse-shared/component/module/connector';
+import type { ConnectorOperationName } from '@dpuse/dpuse-shared/component/module/connector';
 
 const BASE_URL = 'https://api.dpuse.app';
 const CONNECTORS_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'docs', 'connectors');
@@ -69,23 +71,6 @@ const AUTH_LABELS: Record<string, string> = {
     disabled: 'Disabled'
 };
 
-const OPERATION_LABELS: Record<string, string> = {
-    abortOperation: 'Abort Operation',
-    auditObjectContent: 'Audit Object Content',
-    createObject: 'Create Object',
-    describeConnection: 'Describe Connection',
-    dropObject: 'Drop Object',
-    findObject: 'Find Object',
-    getReadableStream: 'Get Readable Stream',
-    getRecord: 'Get Record',
-    listNodes: 'List Nodes',
-    previewObject: 'Preview Object',
-    removeRecords: 'Remove Records',
-    retrieveChunks: 'Retrieve Chunks',
-    retrieveRecords: 'Retrieve Records',
-    upsertRecords: 'Upsert Records'
-};
-
 // ── Markdown Generation ───────────────────────────────────────────────────────────────────────────────────────────────
 
 function generateMarkdown(connector: PublicConnectorDoc): string {
@@ -133,13 +118,8 @@ ${description}
         }
     }
 
-    const supported = new Set(connector.operations);
     md += `\n## Supported Operations\n\nSupports the following operations implemented by the Connector API.\n\n`;
-    md += `| Operation | Supported |\n`;
-    md += `| --------- | --------- |\n`;
-    for (const [id, label] of Object.entries(OPERATION_LABELS)) {
-        md += `| ${label} | ${supported.has(id) ? '✓' : ''} |\n`;
-    }
+    md += generateConnectorOperationsTable(connector.operations as ConnectorOperationName[]);
 
     const links: string[] = [];
     links.push(`- **Identifier:** \`${connector.id}\``);
