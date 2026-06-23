@@ -1,7 +1,7 @@
 {
     "name": "dpuse-kb",
     "description": "The DPUse knowledge base — documentation source and ingestion scripts.",
-    "version": "0.0.27",
+    "version": "0.0.28",
     "private": true,
     "type": "module",
     "engines": {
@@ -12,8 +12,8 @@
         "esbuild@0.28.1": true
     },
     "devDependencies": {
-        "@dpuse/dpuse-development": "^0.3.509",
-        "@dpuse/dpuse-shared": "^0.3.674",
+        "@dpuse/dpuse-development": "^0.3.535",
+        "@dpuse/dpuse-shared": "^0.3.675",
         "@types/node": "^26.0.0",
         "gray-matter": "^4.0.3",
         "npm-check-updates": "^22.2.7",
