@@ -1,8 +1,8 @@
 import { writeFile, mkdir } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { generateConnectorOperationsTable } from '@dpuse/dpuse-shared/component/module/connector';
-import type { ConnectorOperationName } from '@dpuse/dpuse-shared/component/module/connector';
+import { getConnectorActionsTable } from '@dpuse/dpuse-shared/component/module/connector';
+import type { ConnectorActionName } from '@dpuse/dpuse-shared/component/module/connector';
 
 const BASE_URL = 'https://api.dpuse.app';
 const CONNECTORS_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'docs', 'connectors');
@@ -38,7 +38,6 @@ const CATEGORY_LABELS: Record<string, string> = {
     database: 'Database',
     fileStore: 'File Store'
 };
-
 
 const STATUS_LABELS: Record<string, string> = {
     generalAvailability: 'General Availability',
@@ -82,12 +81,8 @@ function generateMarkdown(connector: PublicConnectorDoc): string {
     const statusBadge = connector.statusId ? (STATUS_BADGE[connector.statusId] ?? 'info') : 'info';
     const tags = ['connector', connector.categoryId, connector.id];
 
-    const iconSlots = connector.icon
-        ? `\n<template #icon>${connector.icon}</template>${connector.iconDark ? `\n<template #iconDark>${connector.iconDark}</template>` : ''}`
-        : '';
-    const header = connector.icon
-        ? `<ConnectorHeader title="${title}" category="${category}">${iconSlots}\n</ConnectorHeader>`
-        : `# ${title}\n${category} Connector`;
+    const iconSlots = connector.icon ? `\n<template #icon>${connector.icon}</template>${connector.iconDark ? `\n<template #iconDark>${connector.iconDark}</template>` : ''}` : '';
+    const header = connector.icon ? `<ConnectorHeader title="${title}" category="${category}">${iconSlots}\n</ConnectorHeader>` : `# ${title}\n${category} Connector`;
 
     let md = `---
 title: ${title}
@@ -119,7 +114,7 @@ ${description}
     }
 
     md += `\n## Supported Operations\n\nSupports the following operations implemented by the Connector API.\n\n`;
-    md += generateConnectorOperationsTable(connector.operations as ConnectorOperationName[]);
+    md += getConnectorActionsTable(connector.operations as ConnectorActionName[]);
 
     const links: string[] = [];
     links.push(`- **Identifier:** \`${connector.id}\``);
