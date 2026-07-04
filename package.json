@@ -1,25 +1,18 @@
 {
     "name": "dpuse-kb",
-    "description": "The DPUse knowledge base — documentation source and ingestion scripts.",
-    "version": "0.0.29",
+    "version": "0.0.30",
     "private": true,
+    "description": "The DPUse knowledge base — documentation source and ingestion scripts.",
+    "license": "MIT",
+    "author": "Jonathan Terrell <terrell.jm@gmail.com>",
     "type": "module",
     "engines": {
         "node": "^20.19.0 || >=22.12.0"
     },
     "prettier": "@dpuse/dpuse-development/prettierrc",
     "allowScripts": {
-        "esbuild@0.28.1": true
-    },
-    "devDependencies": {
-        "@dpuse/dpuse-development": "^0.3.535",
-        "@dpuse/dpuse-shared": "^0.3.675",
-        "@types/node": "^26.0.0",
-        "gray-matter": "^4.0.3",
-        "npm-check-updates": "^22.2.7",
-        "prettier": "^3.8.4",
-        "tsx": "^4.22.4",
-        "typescript": "^6.0.3"
+        "esbuild@0.28.1": true,
+        "fsevents@2.3.3": true
     },
     "scripts": {
         "check": "node -e \"import('@dpuse/dpuse-development').then(m => m.checkDependencies())\"",
@@ -33,5 +26,14 @@
         "site:dev": "npm run dev --prefix site",
         "site:build": "npm run ingest:kv && npm run build --prefix site",
         "site:deploy": "npm run ingest:kv && npm run deploy --prefix site"
+    },
+    "devDependencies": {
+        "@dpuse/dpuse-development": "^0.3.647",
+        "@dpuse/dpuse-shared": "^0.3.729",
+        "@types/node": "^26.1.0",
+        "gray-matter": "^4.0.3",
+        "prettier": "^3.9.4",
+        "tsx": "^4.23.0",
+        "typescript": "^6.0.3"
     }
 }
