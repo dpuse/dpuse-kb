@@ -1,13 +1,22 @@
 {
     "name": "dpuse-kb",
-    "version": "0.0.30",
+    "version": "0.0.31",
     "private": true,
     "description": "The DPUse knowledge base — documentation source and ingestion scripts.",
     "license": "MIT",
     "author": "Jonathan Terrell <terrell.jm@gmail.com>",
     "type": "module",
+    "homepage": "https://www.dpuse.app",
+    "bugs": {
+        "url": "https://github.com/dpuse/dpuse-kb/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/dpuse/dpuse-kb.git"
+    },
     "engines": {
-        "node": "^20.19.0 || >=22.12.0"
+        "node": ">=22",
+        "npm": ">=11"
     },
     "prettier": "@dpuse/dpuse-development/prettierrc",
     "allowScripts": {
@@ -28,7 +37,7 @@
         "site:deploy": "npm run ingest:kv && npm run deploy --prefix site"
     },
     "devDependencies": {
-        "@dpuse/dpuse-development": "^0.3.647",
+        "@dpuse/dpuse-development": "^0.3.656",
         "@dpuse/dpuse-shared": "^0.3.729",
         "@types/node": "^26.1.0",
         "gray-matter": "^4.0.3",
