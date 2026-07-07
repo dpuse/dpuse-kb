@@ -19,7 +19,7 @@ hero:
           link: https://my.dpuse.app
 
 features:
-    - title: Source Data
+    - title: Source
       details: Bring data in from any source with flexible connector plugins.
     - title: Contextualise
       details: Build reusable entities and events from your data — customers, transactions, measures — and derive consistent, comparable insights from them.
