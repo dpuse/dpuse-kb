@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// ── Options, Properties, Slots & Emits ───────────────────────────────────────────────────────────────────────────────
+// ── Options, Properties, Model Value, Slots & Emits ──────────────────────────────────────────────────────────────────
 
 import { useData } from 'vitepress';
 
