@@ -3,5 +3,7 @@
     "label": {},
     "description": {},
     "typeId": "kb",
-    "version": "0.0.36"
+    "version": "0.0.37",
+    "icon": null,
+    "iconDark": null
 }

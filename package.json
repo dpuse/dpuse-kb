@@ -1,6 +1,6 @@
 {
     "name": "dpuse-kb",
-    "version": "0.0.36",
+    "version": "0.0.37",
     "private": true,
     "description": "The DPUse knowledge base — documentation source and ingestion scripts.",
     "license": "MIT",
@@ -37,12 +37,12 @@
         "site:deploy": "npm run ingest:kv && npm run deploy --prefix site"
     },
     "devDependencies": {
-        "@dpuse/dpuse-development": "^0.3.656",
-        "@dpuse/dpuse-shared": "^0.3.729",
-        "@types/node": "^26.1.0",
+        "@dpuse/dpuse-development": "^0.3.706",
+        "@dpuse/dpuse-shared": "^0.3.777",
+        "@types/node": "^26.2.0",
         "gray-matter": "^4.0.3",
-        "prettier": "^3.9.4",
-        "tsx": "^4.23.0",
+        "prettier": "^3.9.6",
+        "tsx": "^4.23.12",
         "typescript": "^6.0.3"
     }
 }
