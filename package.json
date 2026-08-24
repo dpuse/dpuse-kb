@@ -1,6 +1,6 @@
 {
     "name": "dpuse-kb",
-    "version": "0.0.38",
+    "version": "0.0.39",
     "private": true,
     "description": "The DPUse knowledge base — documentation source and ingestion scripts.",
     "license": "MIT",
