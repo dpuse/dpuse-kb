@@ -1,0 +1,5 @@
+* text=auto eol=lf
+bundle-analysis-reports/** linguist-vendored
+docs/** linguist-vendored
+eslint.config.js linguist-detectable=false
+public/fileStore*/** -text

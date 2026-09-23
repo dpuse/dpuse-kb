@@ -1,6 +1,6 @@
 {
     "name": "dpuse-kb",
-    "version": "0.0.39",
+    "version": "0.0.40",
     "private": true,
     "description": "The DPUse knowledge base — documentation source and ingestion scripts.",
     "license": "MIT",
@@ -15,8 +15,20 @@
         "url": "git+https://github.com/dpuse/dpuse-kb.git"
     },
     "engines": {
-        "node": ">=22",
-        "npm": ">=11"
+        "node": ">=24",
+        "npm": ">=12"
+    },
+    "devEngines": {
+        "runtime": {
+            "name": "node",
+            "version": ">=24",
+            "onFail": "error"
+        },
+        "packageManager": {
+            "name": "npm",
+            "version": ">=12",
+            "onFail": "error"
+        }
     },
     "prettier": "@dpuse/dpuse-development/prettierrc",
     "allowScripts": {
@@ -24,7 +36,7 @@
         "fsevents@2.3.3": true
     },
     "scripts": {
-        "check": "node -e \"import('@dpuse/dpuse-development').then(m => m.checkDependencies())\"",
+        "check": "node -e \"import('@dpuse/dpuse-development').then(m => m.checkConfigFiles())\" && node -e \"import('@dpuse/dpuse-development').then(m => m.checkDependencies())\"",
         "fetch-connectors": "tsx scripts/fetch-connectors.ts",
         "ingest": "npm run fetch-connectors && op run --env-file=.env -- tsx scripts/ingest.ts",
         "ingest:kv": "npm run fetch-connectors && op run --env-file=.env -- tsx scripts/ingest.ts --kv-only",
@@ -37,12 +49,12 @@
         "site:deploy": "npm run ingest:kv && npm run deploy --prefix site"
     },
     "devDependencies": {
-        "@dpuse/dpuse-development": "^0.3.706",
-        "@dpuse/dpuse-shared": "^0.3.777",
-        "@types/node": "^26.2.0",
+        "@dpuse/dpuse-development": "^0.3.719",
+        "@dpuse/dpuse-shared": "^0.3.816",
+        "@types/node": "^26.6.2",
         "gray-matter": "^4.0.3",
-        "prettier": "^3.9.6",
-        "tsx": "^4.23.12",
+        "prettier": "^3.9.9",
+        "tsx": "^4.23.15",
         "typescript": "^6.0.3"
     }
 }
