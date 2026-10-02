@@ -1,6 +1,6 @@
 {
     "name": "dpuse-kb",
-    "version": "0.0.40",
+    "version": "0.0.41",
     "private": true,
     "description": "The DPUse knowledge base — documentation source and ingestion scripts.",
     "license": "MIT",
@@ -31,10 +31,6 @@
         }
     },
     "prettier": "@dpuse/dpuse-development/prettierrc",
-    "allowScripts": {
-        "esbuild@0.28.1": true,
-        "fsevents@2.3.3": true
-    },
     "scripts": {
         "check": "node -e \"import('@dpuse/dpuse-development').then(m => m.checkProject())\"",
         "fetch-connectors": "node scripts/fetch-connectors.ts",
@@ -50,8 +46,8 @@
     },
     "devDependencies": {
         "@dpuse/dpuse-development": "^0.3.816",
-        "@dpuse/dpuse-shared": "^0.3.868",
-        "@types/node": "^26.6.2",
+        "@dpuse/dpuse-shared": "^0.3.869",
+        "@types/node": "^26.6.4",
         "gray-matter": "^4.0.3",
         "prettier": "^3.9.9",
         "typescript": "^6.0.3"

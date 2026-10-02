@@ -1,8 +1,8 @@
 {
     "id": "dpuse-kb",
     "description": {},
-    "typeId": "kb",
-    "version": "0.0.40",
     "icon": null,
-    "iconDark": null
+    "iconDark": null,
+    "typeId": "kb",
+    "version": "0.0.41"
 }
