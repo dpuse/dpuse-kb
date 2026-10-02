@@ -1,8 +1,8 @@
 import { writeFile, mkdir } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { getConnectorActionsTable } from '@dpuse/dpuse-shared/component/module/connector';
-import type { ConnectorActionName } from '@dpuse/dpuse-shared/component/module/connector';
+import { getConnectorActionsTable } from '@dpuse/dpuse-shared';
+import type { ConnectorActionName } from '@dpuse/dpuse-shared';
 
 const BASE_URL = 'https://api.dpuse.app';
 const CONNECTORS_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'docs', 'connectors');
