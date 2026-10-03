@@ -1,20 +1,22 @@
-import fs from 'fs';
-import path from 'path';
+/* eslint-disable security/detect-non-literal-fs-filename -- Paths are this repository's own docs and site folders. */
+import fs from 'node:fs';
+import path from 'node:path';
 
-const SRC = path.resolve(import.meta.dirname, '../../docs');
-const DEST = path.resolve(import.meta.dirname, '../guide');
+const SOURCE_DIRECTORY = path.resolve(import.meta.dirname, '../../docs');
+const GUIDE_DIRECTORY = path.resolve(import.meta.dirname, '../guide');
 
-function copyDir(src: string, dest: string, exclude: string[] = []) {
-    fs.mkdirSync(dest, { recursive: true });
-    for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
-        if (exclude.includes(entry.name)) continue;
-        const srcPath = path.join(src, entry.name);
-        const destPath = path.join(dest, entry.name);
+function copyDirectory(sourceDirectory: string, destinationDirectory: string, excludedNames: string[] = []) {
+    fs.mkdirSync(destinationDirectory, { recursive: true });
+    const entries = fs.readdirSync(sourceDirectory, { withFileTypes: true });
+    for (const entry of entries) {
+        if (excludedNames.includes(entry.name)) continue;
+        const sourcePath = path.join(sourceDirectory, entry.name);
+        const destinationPath = path.join(destinationDirectory, entry.name);
         if (entry.isDirectory()) {
-            copyDir(srcPath, destPath);
+            copyDirectory(sourcePath, destinationPath);
         } else if (entry.name.endsWith('.md')) {
-            const content = fs.readFileSync(srcPath, 'utf-8');
-            fs.writeFileSync(destPath, transform(content));
+            const content = fs.readFileSync(sourcePath, 'utf-8');
+            fs.writeFileSync(destinationPath, transform(content));
         }
     }
 }
@@ -25,22 +27,23 @@ function transform(content: string): string {
 }
 
 function extractFrontmatter(content: string): Record<string, string> {
-    const match = content.match(/^---\n([\s\S]*?)\n---/);
+    const match = /^---\n([\s\S]*?)\n---/.exec(content);
     if (!match) return {};
     return Object.fromEntries(
-        match[1]!.split('\n').flatMap((line) => {
+        match[1].split('\n').flatMap((line) => {
             const [key, ...rest] = line.split(':');
-            return key && rest.length ? [[key.trim(), rest.join(':').trim()]] : [];
+            return key && rest.length > 0 ? [[key.trim(), rest.join(':').trim()]] : [];
         })
     );
 }
 
-function generateIndex(dest: string): void {
+function generateIndex(destinationDirectory: string): void {
     const sections = new Map<string, { title: string; link: string }[]>();
 
-    function walk(dir: string) {
-        for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-            const fullPath = path.join(dir, entry.name);
+    function walk(directory: string) {
+        const entries = fs.readdirSync(directory, { withFileTypes: true });
+        for (const entry of entries) {
+            const fullPath = path.join(directory, entry.name);
             if (entry.isDirectory()) {
                 walk(fullPath);
             } else if (entry.name.endsWith('.md') && entry.name !== 'index.md') {
@@ -48,15 +51,15 @@ function generateIndex(dest: string): void {
                 const fm = extractFrontmatter(content);
                 const title = fm['title'] ?? entry.name.replace('.md', '');
                 const section = fm['section'] ?? 'Other';
-                const rel = path.relative(dest, fullPath).replace(/\\/g, '/').replace('.md', '');
+                const relativeLink = path.relative(destinationDirectory, fullPath).replaceAll('\\', '/').replace('.md', '');
                 const items = sections.get(section) ?? [];
-                items.push({ title, link: rel });
+                items.push({ title, link: relativeLink });
                 sections.set(section, items);
             }
         }
     }
 
-    walk(dest);
+    walk(destinationDirectory);
 
     const lines = ['# Guide', ''];
     for (const [section, items] of sections) {
@@ -67,14 +70,14 @@ function generateIndex(dest: string): void {
         lines.push('');
     }
 
-    fs.writeFileSync(path.join(dest, 'index.md'), lines.join('\n'));
+    fs.writeFileSync(path.join(destinationDirectory, 'index.md'), lines.join('\n'));
 }
 
-fs.rmSync(DEST, { recursive: true, force: true });
-copyDir(SRC, DEST, ['connectors']); // connectors/ has its own pipeline below
-console.log(`Transformed docs from ${SRC} → ${DEST}`);
+fs.rmSync(GUIDE_DIRECTORY, { recursive: true, force: true });
+copyDirectory(SOURCE_DIRECTORY, GUIDE_DIRECTORY, ['connectors']); // connectors/ has its own pipeline below
+console.log(`Transformed docs from ${SOURCE_DIRECTORY} → ${GUIDE_DIRECTORY}`);
 
-generateIndex(DEST);
+generateIndex(GUIDE_DIRECTORY);
 console.log(`Generated guide/index.md`);
 
 const CONNECTORS_SRC = path.resolve(import.meta.dirname, '../../docs/connectors');
@@ -96,7 +99,7 @@ const CONNECTOR_CATEGORY_SLUGS: Record<string, string> = {
 
 if (fs.existsSync(CONNECTORS_SRC)) {
     fs.rmSync(CONNECTORS_DEST, { recursive: true, force: true });
-    copyDir(CONNECTORS_SRC, CONNECTORS_DEST);
+    copyDirectory(CONNECTORS_SRC, CONNECTORS_DEST);
     console.log(`Transformed connectors from ${CONNECTORS_SRC} → ${CONNECTORS_DEST}`);
 }
 
@@ -117,7 +120,7 @@ function generateConnectorsIndex(): void {
     const connectors: { title: string; file: string; category: string }[] = [];
 
     for (const f of fs.readdirSync(CONNECTORS_DEST)) {
-        if (!f.endsWith('.md') || f === 'index.md') continue;
+        if (f === 'index.md' || !f.endsWith('.md')) continue;
         const content = fs.readFileSync(path.join(CONNECTORS_DEST, f), 'utf-8');
         const fm = extractFrontmatter(content);
         const categoryId = fm['category'] ?? '';
@@ -160,16 +163,16 @@ function generateConnectorCategories(): void {
     const groups = new Map<string, { title: string; file: string; description: string }[]>();
 
     for (const f of fs.readdirSync(CONNECTORS_DEST)) {
-        if (!f.endsWith('.md') || f === 'index.md') continue;
+        if (f === 'index.md' || !f.endsWith('.md')) continue;
         const content = fs.readFileSync(path.join(CONNECTORS_DEST, f), 'utf-8');
         const fm = extractFrontmatter(content);
         const categoryId = fm['category'] ?? '';
-        if (!categoryId || !(categoryId in CONNECTOR_CATEGORY_SLUGS)) continue;
+        if (!categoryId || !Object.hasOwn(CONNECTOR_CATEGORY_SLUGS, categoryId)) continue;
 
         const body = content.slice(content.indexOf('---', 3) + 3);
         const description =
             body
-                .split(/\n\n+/)
+                .split(/\n{2,}/)
                 .map((p) => p.trim())
                 .find((p) => p && !p.startsWith('#') && !p.startsWith('<') && !p.startsWith('|')) ?? '';
 
@@ -180,9 +183,9 @@ function generateConnectorCategories(): void {
 
     for (const [categoryId, connectors] of groups) {
         const label = CONNECTOR_CATEGORY_LABELS[categoryId] ?? categoryId;
-        const slug = CONNECTOR_CATEGORY_SLUGS[categoryId]!;
-        const dir = path.join(CONNECTORS_DEST, slug);
-        fs.mkdirSync(dir, { recursive: true });
+        const slug = CONNECTOR_CATEGORY_SLUGS[categoryId];
+        const categoryDirectory = path.join(CONNECTORS_DEST, slug);
+        fs.mkdirSync(categoryDirectory, { recursive: true });
 
         connectors.sort((a, b) => a.title.localeCompare(b.title));
 
@@ -194,11 +197,14 @@ function generateConnectorCategories(): void {
             ``,
             `# ${label} Connectors`,
             ``,
-            ...connectors.map((c) => `- [${c.title}](/connectors/${c.file})${c.description ? ` — ${c.description}` : ''}`),
+            ...connectors.map((c) => {
+                const descriptionSuffix = c.description ? ` — ${c.description}` : '';
+                return `- [${c.title}](/connectors/${c.file})${descriptionSuffix}`;
+            }),
             ``
         ];
 
-        fs.writeFileSync(path.join(dir, 'index.md'), lines.join('\n'));
+        fs.writeFileSync(path.join(categoryDirectory, 'index.md'), lines.join('\n'));
     }
 }
 
@@ -221,9 +227,9 @@ function generateContextAreas(): void {
     const jsonPath = path.resolve(import.meta.dirname, 'defaultContext.json');
     if (!fs.existsSync(jsonPath)) return;
 
-    const { areas }: { areas: ContextArea[] } = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
-    const dest = path.resolve(import.meta.dirname, '../context');
-    fs.mkdirSync(dest, { recursive: true });
+    const { areas } = JSON.parse(fs.readFileSync(jsonPath, 'utf-8')) as { areas: ContextArea[] };
+    const contextDirectory = path.resolve(import.meta.dirname, '../context');
+    fs.mkdirSync(contextDirectory, { recursive: true });
 
     for (const area of areas) {
         const areaLines = [
@@ -238,9 +244,7 @@ function generateContextAreas(): void {
         if (area.description) areaLines.push(area.description, ``);
 
         if (area.models.length > 0) {
-            areaLines.push(`## Models`, ``);
-            areaLines.push(`| Model | Description |`);
-            areaLines.push(`| --- | --- |`);
+            areaLines.push(`## Models`, ``, `| Model | Description |`, `| --- | --- |`);
             for (const model of area.models) {
                 const desc = model.description || '';
                 areaLines.push(`| [${model.label}](./${area.id}/${model.id}) | ${desc} |`);
@@ -248,11 +252,11 @@ function generateContextAreas(): void {
             areaLines.push(``);
         }
 
-        fs.writeFileSync(path.join(dest, `${area.id}.md`), areaLines.join('\n'));
+        fs.writeFileSync(path.join(contextDirectory, `${area.id}.md`), areaLines.join('\n'));
 
         for (const model of area.models) {
-            const modelDir = path.join(dest, area.id);
-            fs.mkdirSync(modelDir, { recursive: true });
+            const modelDirectory = path.join(contextDirectory, area.id);
+            fs.mkdirSync(modelDirectory, { recursive: true });
 
             const modelLines = [
                 `---`,
@@ -265,7 +269,8 @@ function generateContextAreas(): void {
 
             if (model.description) modelLines.push(model.description, ``);
 
-            fs.writeFileSync(path.join(modelDir, `${model.id}.md`), modelLines.join('\n'));
+            fs.writeFileSync(path.join(modelDirectory, `${model.id}.md`), modelLines.join('\n'));
         }
     }
 }
+/* eslint-enable security/detect-non-literal-fs-filename -- Paths are this repository's own docs and site folders. */

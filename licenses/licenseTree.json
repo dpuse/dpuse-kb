@@ -1,0 +1,11 @@
+{
+  "version": "0.0.42",
+  "name": "dpuse-kb",
+  "dependencies": {
+    "dpuse-site": {
+      "version": "0.0.1",
+      "resolved": "file:../site",
+      "overridden": false
+    }
+  }
+}

@@ -1,7 +1,7 @@
 {
     "name": "dpuse-kb",
-    "version": "0.0.42",
-    "private": true,
+    "version": "0.0.43",
+    "private": false,
     "description": "The DPUse knowledge base — documentation source and ingestion scripts.",
     "license": "MIT",
     "author": "Jonathan Terrell <terrell.jm@gmail.com>",
@@ -14,6 +14,9 @@
         "type": "git",
         "url": "git+https://github.com/dpuse/dpuse-kb.git"
     },
+    "workspaces": [
+        "site"
+    ],
     "engines": {
         "node": ">=24",
         "npm": ">=12"
@@ -31,23 +34,38 @@
         }
     },
     "prettier": "@dpuse/dpuse-development/prettierrc",
+    "allowScripts": {
+        "esbuild@0.21.5": true,
+        "esbuild@0.28.1": true,
+        "fsevents@2.3.3": true,
+        "unrs-resolver@1.12.2": true,
+        "workerd@1.20261001.1": true
+    },
     "scripts": {
+        "audit": "node -e \"import('@dpuse/dpuse-development').then(m => m.auditDependencies())\"",
+        "build": "npm run connectorsFetch && npm run build --workspace site",
         "check": "node -e \"import('@dpuse/dpuse-development').then(m => m.checkProject())\"",
-        "fetch-connectors": "node scripts/fetch-connectors.ts",
-        "ingest": "npm run fetch-connectors && op run --env-file=.env -- node scripts/ingest.ts",
-        "ingest:kv": "npm run fetch-connectors && op run --env-file=.env -- node scripts/ingest.ts --kv-only",
-        "kv-test": "op run --env-file=.env -- node scripts/kvTest.ts",
-        "search": "op run --env-file=.env -- node scripts/search.ts",
+        "cloudflareAISearchKVIngest": "npm run connectorsFetch && op run --env-file=.env -- node scripts/cloudflareAISearchKVIngest.ts",
+        "cloudflareAISearchKVIngest:kvOnly": "npm run connectorsFetch && op run --env-file=.env -- node scripts/cloudflareAISearchKVIngest.ts --kv-only",
+        "connectorsFetch": "node scripts/connectorsFetch.ts",
+        "deploy": "node scripts/cloudflareAISearchKVIngest.ts --kv-only && npm run deploy --workspace site",
+        "document": "node -e \"import('@dpuse/dpuse-development').then(m => m.documentProject('MIT'))\"",
+        "format": "node -e \"import('@dpuse/dpuse-development').then(m => m.formatCode())\"",
+        "lint": "node -e \"import('@dpuse/dpuse-development').then(m => m.lintCode())\"",
+        "release": "npm run build && npm run document && npm run sync && node -e \"import('@dpuse/dpuse-development').then(m => m.triggerGitHubRelease())\"",
+        "site:dev": "npm run dev --workspace site",
         "sync": "node -e \"import('@dpuse/dpuse-development').then(m => m.syncProjectWithGitHub())\"",
-        "type-check": "tsc --noEmit",
-        "site:dev": "npm run dev --prefix site",
-        "site:build": "npm run ingest:kv && npm run build --prefix site",
-        "site:deploy": "npm run ingest:kv && npm run deploy --prefix site"
+        "test": "node -e \"import('@dpuse/dpuse-development').then(m => m.testProject())\"",
+        "testKV": "op run --env-file=.env -- node scripts/testKV.ts",
+        "testSearch": "op run --env-file=.env -- node scripts/testSearch.ts",
+        "type-check": "tsc --noEmit"
     },
     "devDependencies": {
-        "@dpuse/dpuse-development": "^0.3.817",
+        "@dpuse/dpuse-development": "^0.3.821",
         "@dpuse/dpuse-shared": "^0.3.869",
+        "@dpuse/eslint-config-dpuse": "^1.0.130",
         "@types/node": "^26.6.4",
+        "eslint": "^10.12.0",
         "gray-matter": "^4.0.3",
         "prettier": "^3.9.9",
         "typescript": "^6.0.3"

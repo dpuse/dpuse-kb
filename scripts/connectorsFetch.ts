@@ -1,20 +1,19 @@
-import { writeFile, mkdir } from 'node:fs/promises';
-import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { getConnectorActionsTable } from '@dpuse/dpuse-shared';
 import type { ConnectorActionName } from '@dpuse/dpuse-shared';
+import { getConnectorActionsTable } from '@dpuse/dpuse-shared';
+import path from 'node:path';
+import { mkdir, writeFile } from 'node:fs/promises';
 
 const BASE_URL = 'https://api.dpuse.app';
-const CONNECTORS_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'docs', 'connectors');
+const CONNECTORS_DIRECTORY = path.join(import.meta.dirname, '..', 'docs', 'connectors');
 
 // ── Types ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
-interface ConnectorImplementationDoc {
+interface ConnectorImplementationDocument {
     authMethodId: string;
     label?: { en?: string };
 }
 
-interface PublicConnectorDoc {
+interface PublicConnectorDocument {
     id: string;
     label: { en?: string };
     description: { en?: string[] };
@@ -22,7 +21,7 @@ interface PublicConnectorDoc {
     categoryId: string;
     statusId: string | null;
     operations: string[];
-    implementations: Record<string, ConnectorImplementationDoc>;
+    implementations: Record<string, ConnectorImplementationDocument>;
     icon: string | null;
     iconDark: string | null;
     vendorHomeURL: string | null;
@@ -72,7 +71,7 @@ const AUTH_LABELS: Record<string, string> = {
 
 // ── Markdown Generation ───────────────────────────────────────────────────────────────────────────────────────────────
 
-function generateMarkdown(connector: PublicConnectorDoc): string {
+function generateMarkdown(connector: PublicConnectorDocument): string {
     const title = connector.label.en ?? connector.id;
     const rawDescription = connector.description.en ?? [];
     const description = (Array.isArray(rawDescription) ? rawDescription : [rawDescription]).join('\n\n');
@@ -81,8 +80,7 @@ function generateMarkdown(connector: PublicConnectorDoc): string {
     const statusBadge = connector.statusId ? (STATUS_BADGE[connector.statusId] ?? 'info') : 'info';
     const tags = ['connector', connector.categoryId, connector.id];
 
-    const iconSlots = connector.icon ? `\n<template #icon>${connector.icon}</template>${connector.iconDark ? `\n<template #iconDark>${connector.iconDark}</template>` : ''}` : '';
-    const header = connector.icon ? `<ConnectorHeader title="${title}" category="${category}">${iconSlots}\n</ConnectorHeader>` : `# ${title}\n${category} Connector`;
+    const header = generateHeader(connector, title, category);
 
     let md = `---
 title: ${title}
@@ -104,7 +102,7 @@ ${description}
     if (impls.length === 0) {
         md += `Does not require authentication and can be used without creating a DPUse Account.\n`;
     } else if (impls.length === 1) {
-        const [, impl] = impls[0]!;
+        const [, impl] = impls[0];
         md += `This connector uses **${AUTH_LABELS[impl.authMethodId] ?? impl.authMethodId}** authentication.\n`;
     } else {
         for (const [implId, impl] of impls) {
@@ -116,9 +114,7 @@ ${description}
     md += `\n## Supported Operations\n\nSupports the following operations implemented by the Connector API.\n\n`;
     md += getConnectorActionsTable(connector.operations as ConnectorActionName[]);
 
-    const links: string[] = [];
-    links.push(`- **Identifier:** \`${connector.id}\``);
-    links.push(`- [GitHub](https://github.com/dpuse/${connector.id})`);
+    const links = [`- **Identifier:** \`${connector.id}\``, `- [GitHub](https://github.com/dpuse/${connector.id})`];
     if (connector.vendorHomeURL) links.push(`- [Vendor website](${connector.vendorHomeURL})`);
     if (connector.vendorDocumentationURL) links.push(`- [Vendor documentation](${connector.vendorDocumentationURL})`);
     if (connector.vendorAccountURL) links.push(`- [Manage account](${connector.vendorAccountURL})`);
@@ -127,31 +123,40 @@ ${description}
     return md;
 }
 
+/** The page header: the connector's own header component where it has an icon, otherwise a plain title. */
+function generateHeader(connector: PublicConnectorDocument, title: string, category: string): string {
+    if (!connector.icon) return `# ${title}\n${category} Connector`;
+
+    const iconDarkSlot = connector.iconDark ? `\n<template #iconDark>${connector.iconDark}</template>` : '';
+    return `<ConnectorHeader title="${title}" category="${category}">\n<template #icon>${connector.icon}</template>${iconDarkSlot}\n</ConnectorHeader>`;
+}
+
 // ── Main ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
-const res = await fetch(`${BASE_URL}/public/connectors`);
-if (!res.ok) {
-    console.error(`Failed to fetch connectors: ${res.status} ${await res.text()}`);
+const response = await fetch(`${BASE_URL}/public/connectors`);
+if (!response.ok) {
+    console.error(`Failed to fetch connectors: ${String(response.status)} ${await response.text()}`);
     process.exit(1);
 }
 
-const connectors = (await res.json()) as PublicConnectorDoc[];
-console.log(`Fetched ${connectors.length} connectors\n`);
+const connectors = (await response.json()) as PublicConnectorDocument[];
+console.log(`Fetched ${String(connectors.length)} connectors\n`);
 
-await mkdir(CONNECTORS_DIR, { recursive: true });
+await mkdir(CONNECTORS_DIRECTORY, { recursive: true });
 
 let failed = 0;
 for (const connector of connectors) {
     const md = generateMarkdown(connector);
-    const filePath = join(CONNECTORS_DIR, `${connector.id}.md`);
+    const filePath = path.join(CONNECTORS_DIRECTORY, `${connector.id}.md`);
     try {
+        // eslint-disable-next-line security/detect-non-literal-fs-filename -- The path is this repository's own docs folder.
         await writeFile(filePath, md, 'utf-8');
         console.log(`generated: ${connector.id}`);
-    } catch (err) {
-        console.error(`failed:    ${connector.id} — ${err instanceof Error ? err.message : err}`);
+    } catch (error) {
+        console.error(`failed:    ${connector.id} — ${error instanceof Error ? error.message : String(error)}`);
         failed++;
     }
 }
 
-console.log(`\nConnectors: ${connectors.length - failed} generated, ${failed} failed`);
+console.log(`\nConnectors: ${String(connectors.length - failed)} generated, ${String(failed)} failed`);
 if (failed > 0) process.exit(1);

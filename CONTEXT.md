@@ -4,10 +4,11 @@
 
 `dpuse-kb` is the documentation source for DPUse — a data positioning workbench. It contains markdown files that are:
 
-1. **Ingested into Cloudflare D1** so the dpuse-app and dpuse-api can retrieve and search them
-2. **Chunked and uploaded to a RAG service** (Cloudflare Vectorize via `dpuse-api POST /ai/rag/ingest`) to support the AI chat in the Knowledge component
+1. **Written to Cloudflare KV** (the `KB` namespace) so dpuse-api can serve them to the app
+2. **Uploaded to Cloudflare AI Search** to support the AI chat in the Knowledge component
+3. **Built into the public site** at [www.dpuse.app](https://www.dpuse.app), a VitePress site in `site/`
 
-There is no static site. The markdown files are the source of truth; the pipeline moves them into Cloudflare storage where the app can query them.
+The markdown files in `docs/` are the source of truth. Connector pages in `docs/connectors/` are generated from the live connector list by `scripts/connectorsFetch.ts`.
 
 ---
 
@@ -24,14 +25,15 @@ There is no static site. The markdown files are the source of truth; the pipelin
 ## Ingestion pipeline
 
 ```
-.md files in dpuse-kb
-  → npm run ingest (scripts/ingest.ts)
+.md files in docs/
+  → scripts/cloudflareAISearchKVIngest.ts
   → reads each file, parses frontmatter + content
-  → INSERT INTO D1 docs table
-  → POST /ai/rag/ingest → Cloudflare Vectorize (for AI chat RAG)
+  → uploads each file to Cloudflare AI Search (skipped with --kv-only)
+  → writes each doc to KV as docs/<slug>, plus a sorted nav/index
 ```
 
-The ingest script lives at `scripts/ingest.ts` and is triggered via `package.json`. It can target local D1 (via `wrangler dev`) or production.
+`npm run cloudflareAISearchKVIngest` runs the full ingest locally, with secrets from 1Password. Releases run the KV-only ingest
+and deploy the site from the `publish.yml` workflow, through the `deploy` script.
 
 ---
 
