@@ -1,5 +1,5 @@
 {
-  "version": "1.0.001",
+  "version": "1.0.2",
   "name": "dpuse-kb",
   "dependencies": {
     "dpuse-site": {
