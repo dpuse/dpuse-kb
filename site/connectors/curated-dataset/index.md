@@ -5,4 +5,4 @@ section: connectors
 
 # Curated Dataset Connectors
 
-- [DBnomics](/connectors/dpuse-connector-dbnomics) — Template scaffold for building new DPUse connectors. Replace this description, and the sample action stubs in src/index.ts, with your connector's actual behaviour.
+- [DBnomics](/connectors/dpuse-connector-dbnomics) — DBnomics is a free platform that aggregates publicly available economic data from national and international statistical institutions, as well as researchers and private companies. All data is standardized into a common format to simplify search, access, and analysis.
