@@ -108,11 +108,7 @@ const files = await findMarkdownFiles(DOCS_DIRECTORY);
 console.log(`Found ${String(files.length)} markdown files\n`);
 
 // Phase 1: read files (+ AI Search upload if not --kv-only)
-if (isKVOnly) {
-    console.log('── AI Search upload skipped (--kv-only) ──\n');
-} else {
-    console.log('── AI Search upload ──');
-}
+console.log(isKVOnly ? '── AI Search upload skipped (--kv-only) ──\n' : '── AI Search upload ──');
 let aiSearchFailed = 0;
 const navEntries: NavEntry[] = [];
 const documentContents = new Map<string, string>();

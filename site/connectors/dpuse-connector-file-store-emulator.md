@@ -7,10 +7,10 @@ audience: user
 ---
 
 <ConnectorHeader title="File Store Emulator" category="File Store">
-<template #icon><svg viewBox="0 0 333 263"><path fill="#3b82f6" d="M128.947 122.88c6.104 0 11.053 4.949 11.053 11.053v117.894c0 6.105-4.949 11.053-11.053 11.053H70c-38.66 0-70-31.339-70-70 0-38.659 31.34-70 70-70z" transform-origin="70px 192.88px"/><rect width="39.121" height="145.706" x="100.844" fill="#3b82f6" paint-order="fill" rx="7.057" ry="7.057"/><path fill="#ca8a04" d="M171.053 140.001c-6.104 0-11.053-4.949-11.053-11.053V11.054C160 4.949 164.949.001 171.053.001H230c38.66 0 70 31.34 70 70s-31.34 70-70 70z" transform-origin="230px 70.001px"/><rect width="39.121" height="145.706" x="-199.16" y="-262.88" fill="#ca8a04" paint-order="fill" rx="7.057" ry="7.057" transform="scale(-1)"/><path fill="#0d9488" d="M276 263c-31.481 0-57-25.52-57-57v-49.046a7.953 7.953 0 0 1 7.952-7.954h98.095a7.954 7.954 0 0 1 7.953 7.954V206c0 31.48-25.521 57-57 57" transform-origin="276px 206px"/></svg></template>
+<template #icon><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-cog-icon lucide-file-cog"><g stroke="#3b82f6"><path d="M15 8a1 1 0 0 1-1-1V2a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8z"/><path d="M20 8v12a2 2 0 0 1-2 2h-4.182"/><path d="M4 10.592V4a2 2 0 0 1 2-2h8"/></g><g stroke="#ca8a04"><path d="m3.305 19.53.923-.382"/><path d="m4.228 16.852-.924-.383"/><path d="m5.852 15.228-.383-.923"/><path d="m5.852 20.772-.383.924"/><path d="m8.148 15.228.383-.923"/><path d="m8.53 21.696-.382-.924"/><path d="m9.773 16.852.922-.383"/><path d="m9.773 19.148.922.383"/><circle cx="7" cy="18" r="3"/></g></svg></template>
 </ConnectorHeader>
 
-<Badge type="info" text="v1.0.303" /> <Badge type="warning" text="Beta" />
+<Badge type="info" text="v1.0.335" /> <Badge type="warning" text="Beta" />
 
 The File Store Emulator Connector is a read-only connector that provides access to a sample dataset simulating a hypothetical cloud-based file storage service such as Google Drive, Dropbox, or Microsoft OneDrive. It is intended for demonstration, evaluation, and testing, and is freely available to all users.
 
