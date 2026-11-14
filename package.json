@@ -61,7 +61,7 @@
         "type-check": "tsc --noEmit"
     },
     "devDependencies": {
-        "@dpuse/dpuse-development": "^1.0.139",
+        "@dpuse/dpuse-development": "^1.0.153",
         "@dpuse/dpuse-shared": "^1.0.157",
         "@dpuse/eslint-config-dpuse": "^1.0.145",
         "@types/node": "^26.6.5",
