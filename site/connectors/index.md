@@ -32,13 +32,15 @@ Connectors progress through a lifecycle before reaching general availability:
 
 | Connector | Category |
 | --------- | -------- |
-| [Application Emulator](/connectors/dpuse-connector-application-emulator) | Application |
 | [Connector Template](/connectors/dpuse-connector-template) | File Store |
 | [DBnomics](/connectors/dpuse-connector-dbnomics) | Curated Dataset |
-| [Dexie.js](/connectors/dpuse-connector-dexie-js) | Database |
+| [DPUse Application Emulator](/connectors/dpuse-connector-application-emulator) | Application |
+| [DPUse File Store Emulator](/connectors/dpuse-connector-file-store-emulator) | File Store |
 | [Dropbox](/connectors/dpuse-connector-dropbox) | File Store |
-| [File Store Emulator](/connectors/dpuse-connector-file-store-emulator) | File Store |
+| [DuckDB](/connectors/dpuse-connector-duckdb-wasm) | Database |
 | [Google Drive](/connectors/dpuse-connector-google-drive) | File Store |
+| [IndexedDB (Dexie)](/connectors/dpuse-connector-dexie-js) | Database |
 | [Microsoft OneDrive](/connectors/dpuse-connector-microsoft-onedrive) | File Store |
 | [Salesforce](/connectors/dpuse-connector-salesforce) | Application |
 | [SAP SuccessFactors](/connectors/dpuse-connector-sap-successfactors) | Application |
+| [SQLite](/connectors/dpuse-connector-sqlite-wasm) | Database |

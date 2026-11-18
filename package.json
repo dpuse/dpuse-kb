@@ -1,6 +1,6 @@
 {
     "name": "dpuse-kb",
-    "version": "1.0.113",
+    "version": "1.0.114",
     "private": false,
     "description": "The DPUse knowledge base — documentation source and ingestion scripts.",
     "license": "MIT",
@@ -61,8 +61,8 @@
         "type-check": "tsc --noEmit"
     },
     "devDependencies": {
-        "@dpuse/dpuse-development": "^1.0.153",
-        "@dpuse/dpuse-shared": "^1.0.157",
+        "@dpuse/dpuse-development": "^1.0.160",
+        "@dpuse/dpuse-shared": "^1.0.245",
         "@dpuse/eslint-config-dpuse": "^1.0.145",
         "@types/node": "^26.6.5",
         "eslint": "^10.13.0",
