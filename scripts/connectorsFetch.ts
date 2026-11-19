@@ -149,7 +149,6 @@ for (const connector of connectors) {
     const md = generateMarkdown(connector);
     const filePath = path.join(CONNECTORS_DIRECTORY, `${connector.id}.md`);
     try {
-        // eslint-disable-next-line security/detect-non-literal-fs-filename -- The path is this repository's own docs folder.
         await writeFile(filePath, md, 'utf-8');
         console.log(`generated: ${connector.id}`);
     } catch (error) {

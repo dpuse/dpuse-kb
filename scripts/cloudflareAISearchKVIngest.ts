@@ -1,4 +1,3 @@
-/* eslint-disable security/detect-non-literal-fs-filename -- Paths are found by walking this repository's own docs folder. */
 import matter from 'gray-matter';
 import path from 'node:path';
 import { readdir, readFile } from 'node:fs/promises';
@@ -171,4 +170,3 @@ const kvTotal = 1 + documentContents.size;
 console.log(`\nKV: ${String(kvTotal - kvFailed)} written, ${String(kvFailed)} failed`);
 
 if ((!isKVOnly && aiSearchFailed > 0) || kvFailed > 0) process.exit(1);
-/* eslint-enable security/detect-non-literal-fs-filename -- Paths are found by walking this repository's own docs folder. */

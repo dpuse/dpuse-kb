@@ -1,4 +1,3 @@
-/* eslint-disable security/detect-non-literal-fs-filename -- Paths are this repository's own docs and site folders. */
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -273,4 +272,3 @@ function generateContextAreas(): void {
         }
     }
 }
-/* eslint-enable security/detect-non-literal-fs-filename -- Paths are this repository's own docs and site folders. */
