@@ -1,42 +1,23 @@
 ---
 title: What is DPUse?
 section: Getting Started
-tags: [overview, introduction, connect, contextualise, present, cookbook]
+tags: [overview, introduction, sourcing, contextualising, presentations, cookbooks]
 audience: user
 ---
 
 ## What DPUse is
 
-DPUse is a data workbench and AI assistant in one application. It gives you a single environment to connect to your data sources, contextualise that data into meaningful entities and events, and present the results — through a structured UI, through natural language, or both.
+DPUse (Data Positioning & Use) is a browser-based app that helps you prepare your data for use in two main steps: Sourcing and Contextualising. Once your data is contextualised, Presentations and Cookbooks give you two ways to put it to use.
 
-The platform is built around three core activities: Connect, Contextualise, and Present.
-
-## The three activities
-
-### Connect
-
-You connect DPUse to your data sources using **connectors** — plugins that know how to communicate with a specific vendor product (a database, a SaaS platform, a file store). Each connector can have one or more **connections** representing individual accounts or credentials. From a connection you create **data views**: scoped selections of data, ready to inspect and work with.
+**Sourcing** uses Connectors to link to applications, databases, file stores, and curated datasets. These Connections help you set up tabular Data Views from your sources.
 
 See the [Connectors](/connectors/) section for a full list of available connectors.
 
-### Contextualise
+**Contextualising** maps events from your Data Views to detailed Context Models. These models give the DPUse Engine the structure it needs to create clear transactions, facts, or observations.
 
-Raw data reflects the structure of the system it came from, not the questions you want to ask. The Contextualise step transforms your data views into a common set of reusable **entities and events** — customers, products, transactions, facts, measures — that reflect your business reality.
+**Presentations** use ready-made Presenters to show your contextualised data in a meaningful way as soon as it's ready.
 
-This involves two activities:
-
-- **Assembling dimensions** — building stable, reusable models of business entities from one or more data views
-- **Contextualising data** — enriching those models with event-based logic that captures what happened, when, and what it means
-
-The result is structured, comparable data that any presentation or app can draw from.
-
-### Present
-
-Positioned data is surfaced through **presentations** — predefined views designed for fast, efficient access to the insights you need. Presentations are built on top of your contextualised entities and events, so they always reflect the latest positioned data.
-
-## The Cookbook
-
-Beyond predefined presentations, DPUse includes a **Cookbook** — a library of recipes for building custom presentations and data apps using your preferred toolsets. Each recipe is a standalone guide that may include step-by-step instructions, code, or both. Use the Cookbook when you need something tailored that predefined presentations don't cover.
+**Cookbooks** of Recipes guide you in building Data Apps, and additional Presenters, with your contextualised data using your preferred tools.
 
 See the [Cookbook](/cookbook/) section to browse available recipes.
 
@@ -44,7 +25,7 @@ See the [Cookbook](/cookbook/) section to browse available recipes.
 
 DPUse also includes a Knowledge component that gives you two additional ways to work:
 
-- **AI chat** — a conversational assistant that can answer questions and perform the same Connect, Contextualise, and Present operations as the workbench, through natural language
+- **AI chat** — a conversational assistant that can answer questions and perform the same sourcing, contextualising and presentation operations as the workbench, through natural language
 - **Knowledge search** — searchable access to DPUse documentation and reference content
 
 The AI chat is not just a help tool. It has direct access to the same underlying capabilities as the workbench. Anything you can do through the UI, you can do through the chat.

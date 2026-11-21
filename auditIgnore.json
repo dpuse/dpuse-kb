@@ -1,0 +1,10 @@
+{
+    "advisories": [
+        {
+            "id": "GHSA-587h-7wmj-h5pm",
+            "reason": "'launch-editor', bundled in 'vite' 5, used by VitePress 1.x, which affects only the local dev server on Windows",
+            "reviewBy": "2026-12-31"
+        }
+    ],
+    "shippedAdvisories": []
+}
