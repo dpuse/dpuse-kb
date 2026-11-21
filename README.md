@@ -4,6 +4,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![CI](https://github.com/dpuse/dpuse-kb/actions/workflows/ci.yml/badge.svg)](https://github.com/dpuse/dpuse-kb/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/dpuse/dpuse-kb/actions/workflows/codeql.yml/badge.svg)](https://github.com/dpuse/dpuse-kb/security/code-scanning)
 
 The DPUse knowledge base — documentation source and ingestion scripts.
 
@@ -11,15 +12,15 @@ The DPUse knowledge base — documentation source and ingestion scripts.
 
 ## About DPUse
 
-[DPUse](https://www.dpuse.app) (Data Positioning & Use) is an in-browser application that positions your data for use through three core activities: sourcing, contextualising, and publishing.
+DPUse (Data Positioning & Use) is a browser-based app that helps you prepare your data for use in two main steps: Sourcing and Contextualising. Once your data is contextualised, Presentations and Cookbooks give you two ways to put it to use.
 
-**Sourcing** uses a library of [Connectors](https://www.dpuse.app/connectors) to establish [Connections](https://www.dpuse.app) to applications, databases, file stores, and curated datasets; these connections are subsequently used to configure structured [Data Views](https://www.dpuse.app) from the underlying sources.
+**Sourcing** uses Connectors to link to applications, databases, file stores, and curated datasets. These Connections help you set up tabular Data Views from your sources.
 
-**Contextualising** extracts chronological events from those [Data Views](https://www.dpuse.app) and maps them into comprehensive [Context Models](https://www.dpuse.app). This gives the DPUse Engine the structural framework needed to generate deterministic transactions, facts, or observations.
+**Contextualising** maps events from your Data Views to detailed Context Models. These models give the DPUse Engine the structure it needs to create clear transactions, facts, or observations.
 
-**Publishing** uses a library of [Presenters](https://www.dpuse.app) to render standard [Presentations](https://www.dpuse.app) immediately using the contextualised data; additionally, [Cookbooks](https://www.dpuse.app) of [Recipes](https://www.dpuse.app) let you build Data Apps using your preferred tools.
+**Presentations** use ready-made Presenters to show your contextualised data in a meaningful way as soon as it's ready.
 
-In addition, DPUse provides [Tools](https://www.dpuse.app) used by the application, and you can use them to construct connectors and presenters.
+**Cookbooks** of Recipes guide you in building Data Apps, and additional Presenters, with your contextualised data using your preferred tools.
 
 <!-- OPENING_END -->
 
@@ -35,9 +36,15 @@ cd dpuse-kb
 npm install
 ```
 
-_Requires [Node.js](https://nodejs.org/) 24 or later, [npm](https://www.npmjs.com/) 12 or later, and [TypeScript](https://www.typescriptlang.org/) 6.0.3 or later._
+_Requires [Node.js](https://nodejs.org/) 24 or later, [npm](https://www.npmjs.com/) 12 or later, and [TypeScript](https://www.typescriptlang.org/) 6.0.3 or a later 6.0 release. Later versions, including TypeScript 7, are not supported yet._
 
 This repository is managed using the common set of actions provided by [@dpuse/dpuse-development](https://github.com/dpuse/dpuse-development). See the `scripts` block in [package.json](https://github.com/dpuse/dpuse-kb/blob/main/package.json) for details.
+
+### Release Status
+
+DPUse is a new product, and this project is a release candidate: complete and in use across DPUse, but not yet at its first stable release.
+
+Every release is listed on the [Releases](https://github.com/dpuse/dpuse-kb/releases) page.
 
 <!-- USAGE_END -->
 
@@ -71,18 +78,18 @@ This section is updated each time `npm run document` is run. Settings come from 
 
 ### Code Quality
 
-| Check         | Status | What it does                                                                                                                                                                                                |
-| :------------ | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Code analysis | ❌ Off | [SonarCloud](https://sonarcloud.io) checks every push for bugs, code smells and vulnerabilities.                                                                                                            |
-| Linting       | ✅ On  | [ESLint](https://eslint.org) checks the code for errors and style problems. Part of the [CI workflow](https://github.com/dpuse/dpuse-kb/actions/workflows/ci.yml) on every push and pull request to `main`. |
+| Check         | Status | What it does                                                                                                                                                                                                                                                                                              |
+| :------------ | :----- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Code analysis | ❌ Off | [SonarCloud](https://sonarcloud.io) checks every push for bugs, code smells and vulnerabilities.                                                                                                                                                                                                          |
+| Linting       | ✅ On  | [ESLint](https://eslint.org) checks the code for errors and style problems, and the [TypeScript](https://www.typescriptlang.org/) compiler type-checks the whole project. Part of the [CI workflow](https://github.com/dpuse/dpuse-kb/actions/workflows/ci.yml) on every push and pull request to `main`. |
 
 ### Security Analysis
 
-| Check           | Status | What it does                                                                                                                                                                                                                                                                                                                                               |
-| :-------------- | :----- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Push protection | ❌ Off | [GitHub push protection](https://docs.github.com/en/code-security/secret-scanning/push-protection-for-repositories-and-organizations) blocks pushes that contain credentials.                                                                                                                                                                              |
-| Static analysis | ✅ On  | [![CodeQL](https://github.com/dpuse/dpuse-kb/actions/workflows/codeql.yml/badge.svg)](https://github.com/dpuse/dpuse-kb/security/code-scanning) [CodeQL](https://codeql.github.com) scans GitHub Actions and JavaScript/TypeScript for security vulnerabilities, using the extended security queries, on every push and pull request to `main` and weekly. |
-| Secret scanning | ❌ Off | [GitHub secret scanning](https://docs.github.com/en/code-security/secret-scanning) detects credentials, such as API keys and tokens, committed to the repository.                                                                                                                                                                                          |
+| Check           | Status | What it does                                                                                                                                                                                               |
+| :-------------- | :----- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Push protection | ❌ Off | [GitHub push protection](https://docs.github.com/en/code-security/secret-scanning/push-protection-for-repositories-and-organizations) blocks pushes that contain credentials.                              |
+| Static analysis | ✅ On  | [CodeQL](https://codeql.github.com) scans GitHub Actions and JavaScript/TypeScript for security vulnerabilities, using the extended security queries, on every push and pull request to `main` and weekly. |
+| Secret scanning | ❌ Off | [GitHub secret scanning](https://docs.github.com/en/code-security/secret-scanning) detects credentials, such as API keys and tokens, committed to the repository.                                          |
 
 ### Dependencies
 
@@ -110,7 +117,7 @@ Please do not open public GitHub issues for security vulnerabilities. See [SECUR
 
 ## Contributing
 
-This repository is maintained solely by its owner and does not, at present, accept external contributions into the canonical repo. Its source is published openly under the MIT License — every DPUse project is fully open source except DPUse Engine, which remains closed and proprietary.
+This repository is maintained solely by its owner and does not, at present, accept external contributions. Its source is published openly under the MIT License — every DPUse project is fully open source except DPUse Engine and DPUse API, which remain closed and proprietary.
 
 For security vulnerabilities, see [Reporting Vulnerabilities](#reporting-vulnerabilities). For bugs, inconsistencies, or other feedback, [open a GitHub issue](https://github.com/dpuse/dpuse-kb/issues) — feedback is read, but responses and fixes are at the maintainer's discretion.
 
