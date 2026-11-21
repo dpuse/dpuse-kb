@@ -1,6 +1,6 @@
 {
     "name": "dpuse-kb",
-    "version": "1.0.116",
+    "version": "1.0.117",
     "private": false,
     "description": "The DPUse knowledge base — documentation source and ingestion scripts.",
     "license": "MIT",
@@ -39,7 +39,7 @@
         "fsevents@2.3.3": true,
         "unrs-resolver@1.12.2": true,
         "esbuild@0.28.2": true,
-        "workerd@1.20261023.1": true
+        "workerd@1.20261119.1": true
     },
     "scripts": {
         "audit": "node -e \"import('@dpuse/dpuse-development').then(m => m.auditDependencies())\"",
@@ -69,5 +69,8 @@
         "gray-matter": "^4.0.3",
         "prettier": "^3.10.1",
         "typescript": "^6.0.3"
+    },
+    "dependencies": {
+        "wrangler": "^4.166.0"
     }
 }
